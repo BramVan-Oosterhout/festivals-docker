@@ -4,6 +4,12 @@ FROM my/base_database
 
 WORKDIR /home/build
 
+COPY festivals-database-node.conf /etc/.
+COPY collect.tar .
+RUN tar xvf collect.tar; \
+    cp configset/* /usr/local/festivals-database-node/.; \
+    chown www-data:www-data /usr/local/festivals-database-node/*;
+
 ############### Container setup ####################
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
