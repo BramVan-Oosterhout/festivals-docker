@@ -1,0 +1,11 @@
+# configure the festivals-database 
+
+FROM my/base_database
+
+WORKDIR /home/build
+
+############### Container setup ####################
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+ENTRYPOINT [ "/entrypoint.sh" ]
