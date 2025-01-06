@@ -42,5 +42,4 @@ collect: configset
 	cp ../certificates/pki/ca.crt configset/ca.crt
 	cp ../certificates/pki/issued/localhost.crt configset/server.crt
 	cp ../certificates/pki/private/localhost.key configset/server.key
-	tar cvf collect.tar configset
 	cp ../../festivals-database/config_template.toml festivals-database-node.conf
