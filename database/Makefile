@@ -29,10 +29,19 @@ run: rm-festivals-database
 restart: run
 	docker exec -it festivals-database /bin/bash
 
+reup: up
+	docker exec -it festivals-database /bin/bash
+
+up: rm-festivals-database net-up
+	docker compose --file database.yml up --detach
+        
+down:
+	docker compose --file database.yml down
 
 net-up:
 	echo net-up
-	docker network create festivals
+	docker inspect festivals >/dev/null 2>&1 || \
+		docker network create festivals
 	
 ############# Helpers ###############
 configset:
@@ -42,4 +51,4 @@ collect: configset
 	cp ../certificates/pki/ca.crt configset/ca.crt
 	cp ../certificates/pki/issued/localhost.crt configset/server.crt
 	cp ../certificates/pki/private/localhost.key configset/server.key
-	cp ../../festivals-database/config_template.toml festivals-database-node.conf
+	#cp ../../festivals-database/config_template.toml festivals-database-node.conf

@@ -1,0 +1,16 @@
+# compose file for mysql server
+version: '1'
+
+services:
+
+  database:
+    restart: always
+    image: my/database
+    container_name: festivals-database
+    networks:
+      - festivals_backend
+      
+networks:
+  festivals_backend:
+    external: true
+    name: festivals
