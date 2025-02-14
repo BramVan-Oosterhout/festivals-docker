@@ -1,4 +1,4 @@
 certificates
-database/configset
-install_node.sh
-install.sh
+*/configset
+*/install_node.sh
+*/install.sh
