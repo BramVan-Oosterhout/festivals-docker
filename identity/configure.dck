@@ -1,0 +1,54 @@
+# configure the festivals-identity-server 
+
+FROM my/base_identity
+
+WORKDIR /home/build
+
+################## Establish certificate authority ####
+COPY  configset/ca.crt /usr/local/share/ca-certificates/ca.crt
+RUN update-ca-certificates
+
+################## Configure identity server ##########
+COPY etc.festivals-identity-server.conf /etc/festivals-identity-server.conf
+COPY --chown=www-data:www-data configset/authentication.pem  /usr/local/festivals-identity-server/.
+COPY --chown=www-data:www-data configset/authentication-key.pem  /usr/local/festivals-identity-server/.
+COPY --chown=www-data:www-data configset/ca.crt  /usr/local/festivals-identity-server/.
+COPY --chown=www-data:www-data configset/server.crt  /usr/local/festivals-identity-server/.
+COPY --chown=www-data:www-data configset/server.key  /usr/local/festivals-identity-server/.
+
+
+############### Configure database ###################
+    ## CA Key and CA Certificate (ca-key.pem and ca.pem): 
+    ## These files house the Certificate Authority (CA) key and certificate, 
+    ## respectively. The CA certificate plays a pivotal role in verifying 
+    ## the authenticity of other certificates within the system, 
+    ## serving as the root certificate in the certificate chain.
+COPY --chown=mysql:mysql --chmod=644 configset/ca.pem /var/lib/mysql/ca.pem
+COPY --chown=mysql:mysql --chmod=600 configset/ca-key.pem /var/lib/mysql/ca-key.pem
+## SSL keys/crts
+    ## Server Key and Server Certificate (server-key.pem and server-cert.pem): 
+    ## In this set, we encounter the private key and certificate for the MySQL server. 
+    ## The private key's role is to decrypt incoming data encrypted with the public key, 
+    ## while the certificate serves to verify the server's identity to connecting clients.
+COPY --chown=mysql:mysql --chmod=644 configset/localhost.crt.pem /var/lib/mysql/server-cert.pem
+COPY --chown=mysql:mysql --chmod=600 configset/localhost.key.pem /var/lib/mysql/server-key.pem
+    ## Client Key and Client Certificate (client-key.pem and client-cert.pem): 
+    ## Similar to server keys and certificates, these files contain the private key and certificate 
+    ## for MySQL clients. They come into play for encryption and authentication when clients 
+    ## establish connections with the MySQL server.
+COPY --chown=mysql:mysql --chmod=644 configset/localhost.crt.pem /var/lib/mysql/client-cert.pem
+COPY --chown=mysql:mysql --chmod=600 configset/localhost.key.pem /var/lib/mysql/client-key.pem
+## RSA keys -- essential for mysql
+    ## Private Key and Public Key (private_key.pem and public_key.pem): 
+    ## These files hold the private and public keys, facilitating MySQL's secure connections feature. 
+    ## This feature empowers encrypted connections between the MySQL server and clients, 
+    ## with the private key encrypting data sent to the client and the public key securing data 
+    ## sent to the server.
+COPY --chown=mysql:mysql --chmod=644 configset/localhost.key.pem /var/lib/mysql/private_key.pem
+RUN openssl rsa -in /var/lib/mysql/private_key.pem -pubout -outform PEM -out /var/lib/mysql/public_key.pem
+
+############### Container setup ####################
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+ENTRYPOINT [ "/entrypoint.sh" ]

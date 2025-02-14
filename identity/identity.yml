@@ -3,14 +3,14 @@ version: '1'
 
 services:
 
-  database:
+  identity:
     restart: always
-    image: my/database
-    container_name: festivals-database
-    hostname: festivals-database
+    image: my/identity
+    container_name: festivals-identity
+    hostname: festivals-identity
     networks:
       festivals_backend:
-        ipv4_address: 172.20.0.3
+        ipv4_address: 172.20.0.2
       
 networks:
   festivals_backend:
