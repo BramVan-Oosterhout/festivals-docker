@@ -8,6 +8,9 @@ WORKDIR /home/build
 COPY  configset/ca.crt /usr/local/share/ca-certificates/ca.crt
 RUN update-ca-certificates
 
+################## configure mysqld ################
+COPY etc.mysql.mysql.conf.d.mysqld.cnf /etc/mysql/mysql.conf.d/mysqld.cnf
+
 ############### Configure database-node ############
 COPY etc.festivals-database-node.conf /etc/festivals-database-node.conf
 COPY --chown=www-data:www-data configset/*  /usr/local/festivals-database-node/.
