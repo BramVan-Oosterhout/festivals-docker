@@ -10,6 +10,7 @@ RUN update-ca-certificates
 
 ################## configure mysqld ################
 COPY etc.mysql.mysql.conf.d.mysqld.cnf /etc/mysql/mysql.conf.d/mysqld.cnf
+COPY --chown=mysql:mysql --chmod=644 var.lib.mysql/* /etc/var/lib/.
 
 ############### Configure database-node ############
 COPY etc.festivals-database-node.conf /etc/festivals-database-node.conf

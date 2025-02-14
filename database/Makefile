@@ -48,8 +48,18 @@ net-up:
 configset:
 	-mkdir configset
 
-collect: configset
+var.lib.mysql:
+	mkdir var.lib.mysql
+
+collect: configset var.lib.mysql
 	cp ../certificates/pki/ca.crt configset/ca.crt
-	cp ../certificates/pki/issued/localhost.crt configset/server.crt
-	cp ../certificates/pki/private/localhost.key configset/server.key
-	#cp ../../festivals-database/config_template.toml festivals-database-node.conf
+	cp ../certificates/pki/issued/festivals-database.crt configset/server.crt
+	cp ../certificates/pki/private/festivals-database.key configset/server.key
+	cp ../certificates/pki/private/ca.key.pem var.lib.mysql/ca-key.pem
+	cp ../certificates/pki/ca.crt.pem var.lib.mysql/ca.pem
+	cp ../certificates/pki/issued/festivals-database.crt.pem var.lib.mysql/client-cert.pem
+	cp ../certificates/pki/private/festivals-database.key.pem var.lib.mysql/client-key.pem
+	cp ../certificates/pki/private/festivals-database.key.pem var.lib.mysql/private_key.pem
+	cp ../certificates/pki/issued/festivals-database.crt.pem var.lib.mysql/public_key.pem
+	cp ../certificates/pki/issued/festivals-database.crt.pem var.lib.mysql/server-cert.pem
+	cp ../certificates/pki/private/festivals-database.key.pem var.lib.mysql/server-key.pem
