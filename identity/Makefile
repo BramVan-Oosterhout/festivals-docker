@@ -23,10 +23,11 @@ run: rm-festivals-identity
 				--detach \
 				my/identity
 				
-restart: run
-	docker exec -it festivals-identity /bin/bash
+restart: run enter
 
-reup: up
+reup: up enter
+
+enter:
 	docker exec -it festivals-identity /bin/bash
 
 up: rm-festivals-identity
@@ -60,7 +61,6 @@ collect: configset
 	cp ../certificates/pki/issued/festivals-identity.crt configset/server.crt
 	cp ../certificates/pki/private/festivals-identity.key configset/server.key
 #	cp ../../festivals-identity-server/config_template.toml CONFIGURATION MISMATCH WITH EXECUTABLE
-
 
 update:
 	mkdir update

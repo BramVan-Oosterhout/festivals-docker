@@ -47,6 +47,11 @@ COPY --chown=mysql:mysql --chmod=600 configset/localhost.key.pem /var/lib/mysql/
 COPY --chown=mysql:mysql --chmod=644 configset/localhost.key.pem /var/lib/mysql/private_key.pem
 RUN openssl rsa -in /var/lib/mysql/private_key.pem -pubout -outform PEM -out /var/lib/mysql/public_key.pem
 
+############### Initialise database ###################
+RUN systemctl start mysql ; sleep 1 ; \
+    mysql -e "INSERT INTO festivals_identity_database.service_keys  (service_key,service_key_comment) VALUES ('TEST_API_KEY_001',' just another guess as entry for test');" \
+    mysql -e "INSERT INTO festivals_identity_database.api_keys  (api_key,api_key_comment) VALUES ('TEST_API_KEY_001',' just another guess as entry for test');"
+
 ############### Container setup ####################
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
