@@ -26,10 +26,11 @@ run: rm-festivals-database
 				--detach \
 				my/database
 				
-restart: run
-	docker exec -it festivals-database /bin/bash
+restart: run enter
 
-reup: up
+reup: up enter
+
+enter:
 	docker exec -it festivals-database /bin/bash
 
 up: rm-festivals-database net-up
