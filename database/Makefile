@@ -63,3 +63,5 @@ collect: configset var.lib.mysql
 	cp ../certificates/pki/issued/festivals-database.crt.pem var.lib.mysql/public_key.pem
 	cp ../certificates/pki/issued/festivals-database.crt.pem var.lib.mysql/server-cert.pem
 	cp ../certificates/pki/private/festivals-database.key.pem var.lib.mysql/server-key.pem
+	openssl rsa -in var.lib.mysql/private_key.pem -pubout -outform PEM -out var.lib.mysql/public_key.pem
+

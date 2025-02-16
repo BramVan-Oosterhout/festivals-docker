@@ -10,7 +10,7 @@ RUN update-ca-certificates
 
 ################## configure mysqld ################
 COPY etc.mysql.mysql.conf.d.mysqld.cnf /etc/mysql/mysql.conf.d/mysqld.cnf
-COPY --chown=mysql:mysql --chmod=644 var.lib.mysql/* /etc/var/lib/.
+COPY --chown=mysql:mysql --chmod=644 var.lib.mysql/* /var/lib/mysql/.
     ### remove checking of CN ###
 RUN systemctl start mysql ; sleep 1 ; \
     mysql -e "alter user 'festivals.api.reader'@'%' REQUIRE NONE;" \
