@@ -49,3 +49,11 @@ collect: configset
 	cp ../certificates/pki/ca.crt configset/ca.crt
 	cp ../certificates/pki/issued/festivals-gateway.crt configset/server.crt
 	cp ../certificates/pki/private/festivals-gateway.key configset/server.key
+
+
+update:
+	mkdir update
+
+update-exe: update
+	cp ../../festivals-gateway/festivals-gateway update/festivals-gateway
+	docker cp update/festivals-gateway festivals-gateway:/usr/local/bin/festivals-gateway
