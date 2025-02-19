@@ -1,5 +1,8 @@
 certificates
+test
 */configset
 */update
+*/var.lib.mysql
 */install_node.sh
 */install.sh
+*/.vscode
