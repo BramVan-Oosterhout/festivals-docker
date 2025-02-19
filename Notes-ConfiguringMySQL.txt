@@ -1,0 +1,25 @@
+Default options are read from the following files in the given order:
+/etc/my.cnf /etc/mysql/my.cnf ~/.my.cnf 
+
+/etc/my.cnf - does not exist
+/etc/mysql/my.cnf - refers to:
+    !includedir /etc/mysql/conf.d/
+        /etc/mysql/conf.d/mysql.cnf - configures mysql and is empty
+        /etc/mysql/conf.d/mysqldump.cnf - configures mysqldump
+    !includedir /etc/mysql/mysql.conf.d/
+        /etc/mysql/mysql.conf.d/mysqld.cnf - configures mysqld:
+            [mysqld]
+                user		= mysql
+                bind-address		= 127.0.0.1
+                mysqlx-bind-address	= 127.0.0.1
+                key_buffer_size		= 16M
+                myisam-recover-options  = BACKUP
+                log_error = /var/log/mysql/error.log
+                max_binlog_size   = 100M
+            
+        /etc/mysql/mysql.conf.d/mysql.cnf - configures mysql and is empty
+
+references re certification:
+    https://docs.cpanel.net/knowledge-base/security/how-to-configure-mysql-ssl-connections/
+    https://dev.mysql.com/doc/refman/8.4/en/using-encrypted-connections.html
+    https://www.mydbops.com/blog/securing-mysql-connections-with-ssl-tls-encryption

@@ -1,0 +1,17 @@
+Notes on Festivals-App
+
+the servers on festivals app start and LISTEN on bindhost and port
+
+At startup the heartbeat notifies the festivals-gateway that the server is  up and listening at bindhost:port
+   - bindhost takes the form of festivals-<server>
+
+From there all communication could in principle go via festivals-gateway/request and be routed appropriately.
+But the server can also be addressed directly through festivals-<server>:port/request
+ - if the correct certificates are presented.
+
+
+daneez cleaning
+399$$ Sunday 2 Feb
+Text address details to 0483 807 474
+Meet Sat 1 to confirm quote.
+

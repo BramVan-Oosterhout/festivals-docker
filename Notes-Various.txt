@@ -1,0 +1,91 @@
+
+################## Establish certificate authority ###
+COPY  certificates/pki/ca.crt /usr/local/share/ca-certificates/ca.crt
+#COPY  certificates/pki/ca.crt.pem /usr/local/share/ca-certificates/ca.pem
+RUN update-ca-certificates
+
+        Service-Key: TEST_API_KEY_001
+    -H 'Authorization: Bearer API_KEY_01
+curl -H 'Authorization: Bearer TEST_API_KEY_001'  \
+        --cert /usr/local/festivals-identity-server/server.crt \
+        --key /usr/local/festivals-identity-server/server.key -vvv  \
+        --cacert /usr/local/festivals-identity-server/ca.crt \
+        https://localhost:22580/api_keys
+
+
+        >>> Opened dbURI: 
+festivals.api.writer:insecure@tcp(festivals-database:3306)/festivals_api_database
+                                    ?charset=utf8&parseTime=True&tls=org.festivalsapp.mysql.tls"}
+
+/usr/bin/openssl s_server -cert /etc/mysql/ssl/server-cert.pem -key /etc/mysql/ssl/server-key.pem -www
+
+
+-----------
+Hi Simon,
+
+In a context different from Festivals-App I came across the notion of binding to IP address 0.0.0.0
+
+That made me re-evaluate the configuration file of festivals-gateway (with parallels to the other servers)
+
+The default config file is:
+```
+# festivals-gateway configuration file v1.0
+# TOML 1.0.0-rc.2+
+
+[service]
+bind-address = "localhost"
+bind-host = "localhost"
+port = 8080
+key = "TEST_API_KEY_001"
+
+[tls]
+festivaslapp-root-ca = "/usr/local/festivals-gateway/ca.crt"
+cert = "/usr/local/festivals-gateway/server.crt"
+key = "/usr/local/festivals-gateway/ca.key"
+
+[heartbeat]
+endpoint = "localhost"
+interval = 6
+
+[authentication]
+endpoint = "localhost"
+```
+I have struggled with this for a while. I use:
+```
+bind-host = "festivals-gateway"
+```
+The server host name, That seemed logical. And then I use the server IP address as the bind-address:
+```
+bind-address = "172.20.0.5"
+```
+With this set up I can gest the heartbeat to be accepted (almost, I get a 404) after configuring the correct festivals-app-root-ca, cert and key with:
+```
+endpoint = "https://festivals-gateway:8080/loversear"
+```
+In the same way I can connect to the festivals-identity-server with:
+```
+endpoint = "https://festivals-identity-server:22580"
+```
+
+I notice that in the gateway README the Usage is TBA and hints at `discovery.base/services discovery.base/loversear`
+And in DOCUMENTATION under Discovery-Route there is an example to access loversear with:
+```
+ POST https://discovery.festivalsapp.dev/loversear
+```
+That suggests that the configuration should have the port as the https default:
+```
+port = 443
+```
+and the /etc/host should contain:
+```
+172.20.0.5	discovery.festivalsapp.dev
+```
+But how should I configure the `bind-host`?
+
+A second issue is that this configuration requires that servers start up with a known IP address. That is what I currently do. But that is very restrictive. tThe bind address 0.0.0.0 seems a solution to this problem. What do you think?
+
+And finally, what should the certificate associated with the festivals-gateway be. Currently I generate the certificate with CN=festivals-gateway. Do I need to generate the certificate with "subject Alternative Name", including `festivalsapp.home`, `www.festivalsapp.home`, `website.festivalsapp.home`, `discovery.festivalsapp.home`, `api.festivalsapp.home`, `files.festivalsapp.home`?
+
+
+
+
