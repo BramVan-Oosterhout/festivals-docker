@@ -56,5 +56,5 @@ update:
 	mkdir update
 
 update-exe: update
-	cp ../../festivals-server/festivals-server .
-	docker cp festivals-server festivals-server:/usr/local/bin/.
+	cp ../../festivals-server/festivals-server update/.
+	docker cp update/festivals-server festivals-server:/usr/local/bin/.
