@@ -1,17 +1,30 @@
 # create docker images for Festivals-App
 
 APP=undefined
-BUILD=docker buildx build --progress=plain --no-cache
+# APP=festivals-metwork creates the docker network
+# APP=festivals-identity-server creates the identity server
+# ... etc ...
+
+export BUILD=docker buildx build --progress=plain --no-cache
 
 ubuntu:
 	${BUILD} -f ubuntu.dck --tag festivals-ubuntu .
 
 base:
-	echo "${BUILD} -f ${APP}/base.dck --tag my/${APP}-base ."
+	${MAKE} base -C ${APP}
 
 net-up:
 	${MAKE} net-up -C ${APP}
 
+server:
+	${MAKE} server -C ${APP}
+
+up: 
+	${MAKE} up ${APP}
+
+down:
+	${MAKE} down ${APP
+	}
 ###############################
 gateway: 
 	echo mkdir gateway
@@ -43,7 +56,7 @@ reup: up enter
 enter:
 	docker exec -it festivals-gateway /bin/bash
 
-up: rm-festivals-gateway net-up
+_up: rm-festivals-gateway net-up
 	docker compose --file gateway.yml up --detach
         
 down:

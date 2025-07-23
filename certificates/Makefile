@@ -3,10 +3,10 @@ EASYRSA=/usr/share/easy-rsa
 
 ## NOTE
 DOMAINS_NEW= localhost \
-		$(shell cd ..; ls -d festivals* )
+		$(shell cd ..; ls -d festivals* | grep -v network )
 
 DOMAINS= localhost \
-		festivals-identity \
+		festivals-identity-server \
 		festivals-database \
 		festivals-fileserver \
 		festivals-gateway \

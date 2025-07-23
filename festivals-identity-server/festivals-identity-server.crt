@@ -1,0 +1,88 @@
+Certificate:
+    Data:
+        Version: 3 (0x2)
+        Serial Number:
+            73:d0:2b:95:45:dd:59:43:59:c5:12:93:37:b5:05:88
+        Signature Algorithm: sha256WithRSAEncryption
+        Issuer: CN=ChangeMe
+        Validity
+            Not Before: Jul 21 03:46:55 2025 GMT
+            Not After : Oct 24 03:46:55 2027 GMT
+        Subject: CN=festivals-identity-server
+        Subject Public Key Info:
+            Public Key Algorithm: rsaEncryption
+                Public-Key: (2048 bit)
+                Modulus:
+                    00:c9:88:9e:53:44:fd:47:8f:12:00:0f:07:6c:24:
+                    2a:10:ce:2d:60:6b:f0:14:2e:76:47:aa:62:13:6c:
+                    e3:33:7f:33:42:b4:b0:7c:3a:9d:a2:cd:5b:53:50:
+                    80:ab:0e:33:83:5d:d9:87:23:83:7a:74:9a:de:41:
+                    fe:c4:c2:f9:39:84:8f:b4:e4:46:a4:e3:1a:39:92:
+                    60:2d:5d:60:8a:36:b6:f2:31:c5:fb:4a:d8:cf:ae:
+                    bc:1b:41:55:4d:f2:4a:96:bd:39:71:4d:77:94:fd:
+                    5d:a2:ac:3a:f0:b7:35:df:52:b4:07:23:8f:9a:8c:
+                    d9:9c:71:c7:5c:bd:50:4f:b1:5d:d7:3d:46:62:1c:
+                    40:dc:f7:e3:c5:8f:c8:ce:76:e6:18:63:60:fa:84:
+                    c0:6e:ce:c2:f4:a1:45:0b:93:b0:a9:17:8f:8c:44:
+                    03:4c:8b:74:62:90:00:61:2f:51:65:d8:c2:ae:4e:
+                    fa:47:95:61:23:47:93:13:bf:23:05:a7:c1:e0:66:
+                    85:d2:48:5b:3f:90:d3:b0:48:5d:94:3c:2e:e7:52:
+                    50:54:9a:d7:e0:17:6c:8f:02:5d:85:09:bc:d8:02:
+                    6c:31:26:16:16:12:d9:dc:9f:e9:81:99:f1:a0:48:
+                    c6:b9:39:10:d2:04:72:4b:72:89:5c:a8:8b:e7:27:
+                    6e:39
+                Exponent: 65537 (0x10001)
+        X509v3 extensions:
+            X509v3 Basic Constraints: 
+                CA:FALSE
+            X509v3 Subject Key Identifier: 
+                0B:0E:8C:41:2C:6C:7E:EB:85:41:25:E4:B1:E0:76:4D:25:6B:26:CF
+            X509v3 Authority Key Identifier: 
+                keyid:85:23:01:58:7A:2E:9A:18:D2:A1:59:BE:6E:87:AF:A5:00:E7:B7:DC
+                DirName:/CN=ChangeMe
+                serial:21:5D:B1:77:1C:1D:BF:7A:2C:35:71:44:71:97:1F:06:22:B1:F7:5E
+            X509v3 Extended Key Usage: 
+                TLS Web Server Authentication, TLS Web Client Authentication
+            X509v3 Key Usage: 
+                Digital Signature, Key Encipherment
+            X509v3 Subject Alternative Name: 
+                DNS:festivals-identity-server
+    Signature Algorithm: sha256WithRSAEncryption
+    Signature Value:
+        2c:24:8c:86:0e:3d:37:d2:53:64:f3:46:75:53:a7:1d:bf:80:
+        1b:43:71:27:22:a4:af:fd:30:48:70:4b:27:7b:25:72:73:f1:
+        cd:27:3b:c6:60:7c:14:ee:15:b0:ed:4b:6d:99:2c:17:71:b0:
+        7c:86:8a:27:37:27:66:e0:b0:b5:0d:b5:91:bb:31:74:ed:d5:
+        d9:13:65:9f:4d:df:8c:83:e1:d7:4b:bc:b8:00:4d:71:a6:22:
+        0c:af:a9:aa:44:ce:7c:35:37:61:f6:37:8f:c7:22:e5:e5:ec:
+        45:75:4d:c9:13:ce:61:68:d5:d5:57:65:8b:8b:80:db:af:30:
+        8e:2b:4d:88:d1:be:ea:eb:84:56:b1:62:63:46:a5:fe:7f:f8:
+        f1:aa:18:4c:8f:88:a4:11:27:94:a6:c7:e0:ea:ed:bf:62:46:
+        cf:b5:6d:9c:7f:d2:7b:27:13:62:ac:16:3d:41:49:11:d1:c7:
+        37:65:b8:4e:14:6d:75:7a:b1:03:36:05:19:ac:c5:e5:39:9a:
+        64:12:9a:2d:13:b7:f2:60:97:d3:5c:08:c8:aa:44:df:57:18:
+        3e:c6:62:ee:55:f5:b6:15:8b:a4:9b:08:5c:ca:6b:59:d5:99:
+        ff:be:25:4f:e7:86:db:ec:d3:ed:b5:24:f7:a2:4f:77:2b:2d:
+        36:79:51:cc
+-----BEGIN CERTIFICATE-----
+MIIDkTCCAnmgAwIBAgIQc9ArlUXdWUNZxRKTN7UFiDANBgkqhkiG9w0BAQsFADAT
+MREwDwYDVQQDDAhDaGFuZ2VNZTAeFw0yNTA3MjEwMzQ2NTVaFw0yNzEwMjQwMzQ2
+NTVaMCQxIjAgBgNVBAMMGWZlc3RpdmFscy1pZGVudGl0eS1zZXJ2ZXIwggEiMA0G
+CSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDJiJ5TRP1HjxIADwdsJCoQzi1ga/AU
+LnZHqmITbOMzfzNCtLB8Op2izVtTUICrDjODXdmHI4N6dJreQf7Ewvk5hI+05Eak
+4xo5kmAtXWCKNrbyMcX7StjPrrwbQVVN8kqWvTlxTXeU/V2irDrwtzXfUrQHI4+a
+jNmcccdcvVBPsV3XPUZiHEDc9+PFj8jOduYYY2D6hMBuzsL0oUULk7CpF4+MRANM
+i3RikABhL1Fl2MKuTvpHlWEjR5MTvyMFp8HgZoXSSFs/kNOwSF2UPC7nUlBUmtfg
+F2yPAl2FCbzYAmwxJhYWEtncn+mBmfGgSMa5ORDSBHJLcolcqIvnJ245AgMBAAGj
+gc8wgcwwCQYDVR0TBAIwADAdBgNVHQ4EFgQUCw6MQSxsfuuFQSXkseB2TSVrJs8w
+TgYDVR0jBEcwRYAUhSMBWHoumhjSoVm+boevpQDnt9yhF6QVMBMxETAPBgNVBAMM
+CENoYW5nZU1lghQhXbF3HB2/eiw1cURxlx8GIrH3XjAdBgNVHSUEFjAUBggrBgEF
+BQcDAQYIKwYBBQUHAwIwCwYDVR0PBAQDAgWgMCQGA1UdEQQdMBuCGWZlc3RpdmFs
+cy1pZGVudGl0eS1zZXJ2ZXIwDQYJKoZIhvcNAQELBQADggEBACwkjIYOPTfSU2Tz
+RnVTpx2/gBtDcScipK/9MEhwSyd7JXJz8c0nO8ZgfBTuFbDtS22ZLBdxsHyGiic3
+J2bgsLUNtZG7MXTt1dkTZZ9N34yD4ddLvLgATXGmIgyvqapEznw1N2H2N4/HIuXl
+7EV1TckTzmFo1dVXZYuLgNuvMI4rTYjRvurrhFaxYmNGpf5/+PGqGEyPiKQRJ5Sm
+x+Dq7b9iRs+1bZx/0nsnE2KsFj1BSRHRxzdluE4UbXV6sQM2BRmsxeU5mmQSmi0T
+t/Jgl9NcCMiqRN9XGD7GYu5V9bYVi6SbCFzKa1nVmf++JU/nhtvs0+21JPeiT3cr
+LTZ5Ucw=
+-----END CERTIFICATE-----
