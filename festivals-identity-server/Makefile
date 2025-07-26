@@ -5,8 +5,6 @@ BUILD=docker buildx build
 CONFIG_TEMPLATE_URL=https://raw.githubusercontent.com/Festivals-App/festivals-identity-server/refs/heads/master/config_template.toml
 
 include ../develop.mk
-develop.mk:
-	ln -s ../develop.mk develop.mk
 
 base: ${APP}.conf certs
 	${BUILD} -f base.dck --tag my/${APP}-base .
