@@ -10,8 +10,9 @@ DOMAINS= localhost \
 		festivals-database \
 		festivals-fileserver \
 		festivals-gateway \
-		festivals-server 
-		
+		festivals-server \
+		api-client
+
 DOMAINS_OLD= localhost \
 		gateway.festivalsapp.dev \
 		identity-0.festivalsapp.dev \
