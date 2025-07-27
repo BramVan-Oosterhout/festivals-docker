@@ -37,14 +37,13 @@ vpath %.pem pki/private:pki/issued
 test:
 	echo ${DOMAINS_NEW}
 
-
-
 all: ${PEMS}
 crts: ${CRTS}
 		
 %.crt %.key : 
-	if [ -e ../$*/hostlist ]; then echo "--subject-alt-name=../$*/hostlist exists"; fi
-	./easyrsa --passin=file:pwd build-serverClient-full $* nopass
+	$(eval SAN=$(shell cat ../$*/hostlist))
+#	if [ -e ../$*/hostlist ]; then echo "--subject-alt-name=../$*/hostlist exists"; fi
+	./easyrsa ${SAN} --passin=file:pwd build-serverClient-full $* nopass
 #	./easyrsa --passin=file:pwd --passout=file:pwd build-serverClient-full $* nopass
 
 %.key.pem : %.key
