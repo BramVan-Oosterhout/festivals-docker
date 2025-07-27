@@ -2,7 +2,7 @@ FROM festivals-ubuntu
 
 WORKDIR /home/build
 
-# DISABLE scri[ter firewall configuration with:
+# DISABLE scripter firewall configuration with:
 #     echo '#!/usr/bin/sh' > /usr/sbin/ufw
 # It interferes with docker uiptables configuration
 RUN echo '#!/usr/bin/sh' > /usr/sbin/ufw && \
