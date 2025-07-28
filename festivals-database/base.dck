@@ -1,0 +1,8 @@
+FROM festivals-ubuntu
+
+WORKDIR /home/build
+
+RUN curl -L -o install.sh \
+    https://raw.githubusercontent.com/Festivals-App/festivals-database/refs/heads/main/operation/install.sh && \
+    chmod +x install.sh && \
+    ./install.sh insecure insecure insecure insecure

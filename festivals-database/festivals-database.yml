@@ -1,0 +1,18 @@
+# compose file for festivals-database
+version: '1'
+
+services:
+
+  identity:
+    restart: always
+    image: my/festivals-database
+    container_name: festivals-database
+    hostname: festivals-database
+    networks:
+      festivals_backend:
+ #       ipv4_address: 172.20.0.1
+      
+networks:
+  festivals_backend:
+    external: true
+    name: festivals-network
