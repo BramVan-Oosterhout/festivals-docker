@@ -18,9 +18,23 @@ COPY --chown=mysql:mysql --chmod=640 server-key.pem \
 # does not make a difference, bind-address is already set in 
 # /etc/mysql/mysql.conf.d/mysqld.cnf to 127.0.0.1
 # Moreover, the bind address needs an IP address, not a DNS domain
-# What is the intention here>
-#COPY --chmod=644 festivals-mysqld.cnf \
-#                        /etc/mysql/mysql.conf.d/festivals-mysqld.cnf
+# What is the intention here?
+# make mysql listen to very request on the network:
+# with: bind-address = 0.0.0.0
+RUN sed -i \
+        -e '/^bind-address/c\bind-address = 0.0.0.0' \
+        -e '/^mysqlx-bind-address/c\mysqlx-bind-address = 0.0.0.0' \
+                        /etc/mysql/mysql.conf.d/mysqld.cnf
+
+RUN systemctl start mysql &>/dev/null && sleep 5 && \
+service mysql status && \
+  /usr/bin/mysql \
+  -e "alter user 'festivals.api.writer' require subject '/CN=FestivalsAppDatabaseClient';" \
+  -e "alter user 'festivals.api.reader' require subject '/CN=FestivalsAppDatabaseClient';" \
+  -e "flush privileges";
+
+COPY --chmod=644 festivals-mysqld.cnf \
+                       /etc/mysql/mysql.conf.d/festivals-mysqld.cnf
 COPY festivals-database-node.conf /etc/festivals-database-node.conf
                                 
 ############### Container setup ####################

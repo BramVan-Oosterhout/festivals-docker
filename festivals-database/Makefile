@@ -1,4 +1,4 @@
-# Create the festivals-idenrity-server
+# Create the festivals-database
 
 APP=festivals-database
 BUILD=docker buildx build
@@ -18,7 +18,7 @@ certs:
 	cp ../certificates/pki/private/${APP}.key .
 	openssl x509 -in ca.crt -out ca.pem -outform PEM
 	openssl x509 -in ${APP}.crt -out server-cert.pem -outform PEM
-	openssl rsa -in ${APP}.key -text | sudo tee server-key.pem
+	openssl rsa -in ${APP}.key -text > server-key.pem
 
 server: certs
 	${BUILD} -f configure.dck --tag my/${APP} .
