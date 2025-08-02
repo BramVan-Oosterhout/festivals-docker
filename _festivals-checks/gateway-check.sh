@@ -9,6 +9,7 @@ JWT=$(curl -H "Api-Key: TEST_API_KEY_001" \
 
 echo '=============================== INFO ============================================'
 
+echo "   >>> https://gateway.festivals-gateway/info"
 curl -H "Api-Key: TEST_API_KEY_001" \
      -H "Authorization: Bearer $JWT" \
      --cert /usr/local/festivals-checks/api-client.crt \
@@ -18,6 +19,8 @@ curl -H "Api-Key: TEST_API_KEY_001" \
 
 echo
 echo '============================== SERVICES ============================================='
+
+echo "   >>> https://discovery.festivals-gateway/services"
 curl -H "Api-Key: TEST_API_KEY_001" \
      -H "Authorization: Bearer $JWT" \
      --cert /usr/local/festivals-checks/api-client.crt \
