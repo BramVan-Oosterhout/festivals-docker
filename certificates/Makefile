@@ -11,7 +11,8 @@ DOMAINS= localhost \
 		festivals-fileserver \
 		festivals-gateway \
 		festivals-server \
-		api-client
+		api-client \
+		FestivalsAppDatabaseClient
 
 DOMAINS_OLD= localhost \
 		gateway.festivalsapp.dev \
@@ -43,7 +44,7 @@ crts: ${CRTS}
 %.crt %.key : 
 	$(eval SAN=$(shell cat ../$*/hostlist))
 #	if [ -e ../$*/hostlist ]; then echo "--subject-alt-name=../$*/hostlist exists"; fi
-	./easyrsa ${SAN} --passin=file:pwd build-serverClient-full $* nopass
+	./easyrsa ${SAN} --passin=file:pwd build-serverClient-full "$*" nopass
 #	./easyrsa --passin=file:pwd --passout=file:pwd build-serverClient-full $* nopass
 
 %.key.pem : %.key
