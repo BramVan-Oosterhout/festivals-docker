@@ -1,0 +1,9 @@
+FROM festivals-ubuntu
+
+WORKDIR /home/build
+
+RUN echo '#!/usr/bin/sh' > /usr/sbin/ufw && \
+    curl -L -o install.sh \
+    https://raw.githubusercontent.com/Festivals-App/festivals-server/refs/heads/main/operation/install.sh && \
+    chmod +x install.sh && \
+    ./install.sh
