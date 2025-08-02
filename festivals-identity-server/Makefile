@@ -21,7 +21,7 @@ certs:
 	openssl rsa -in festivals-identity-server.key -text | \
 				tee festivals-identity-server.authentication.privatekey.pem
 
-server:
+server: certs
 	${BUILD} -f configure.dck --tag my/${APP} .
 
 up:
