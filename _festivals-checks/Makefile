@@ -3,6 +3,8 @@ BUILD=docker buildx build
 
 include ../develop.mk
 
+all: checks up
+
 certs:
 	cp ../certificates/pki/ca.crt .
 	cp ../certificates/pki/issued/api-client.crt .

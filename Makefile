@@ -14,83 +14,27 @@ all: ubuntu certificates festivals-identity-server festivals-gateway \
 ubuntu:
 	${BUILD} -f ubuntu.dck --tag festivals-ubuntu .
 
-certificates:
-	${MAKE} init all -C certificates
+certificates: FORCE
+	${MAKE} -C certificates init all
 
-festivals*:
-	${MAKE} all -C $*
+festivals%: FORCE
+	${MAKE} -C $@ all
 
 
 base:
-	${MAKE} base -C ${APP}
+	${MAKE} -C ${APP} base
 
 net-up:
-	${MAKE} net-up -C ${APP}
+	${MAKE} -C ${APP} net-up
 
 server:
-	${MAKE} server -C ${APP}
+	${MAKE} -C ${APP} server
 
 up: 
-	${MAKE} up ${APP}
+	${MAKE}  ${APP} up
 
 down:
 	${MAKE} down ${APP
 	}
-###############################
-gateway: 
-	echo mkdir gateway
-	mkdir gateway
 
-install.sh:
-	curl -L -o install.sh https://github.com/Festivals-App/festivals-gateway/raw/main/operation/install.sh
-
-#base: rm-base install.sh
-#	docker build --progress=plain --no-cache -f base.dck --tag my/base_gateway .
-rm-base:
-	-docker rmi my/base_gateway
-
-configure: collect
-	docker build --progress=plain --no-cache -f configure.dck --tag my/gateway .
-
-rm-festivals-gateway:
-	-docker rm -f festivals-gateway
-
-run: rm-festivals-gateway
-	docker run --name festivals-gateway \
-				--detach \
-				my/gateway
-				
-restart: run enter
-
-reup: up enter
-
-enter:
-	docker exec -it festivals-gateway /bin/bash
-
-_up: rm-festivals-gateway net-up
-	docker compose --file gateway.yml up --detach
-        
-down:
-	docker compose --file gateway.yml down
-
-net-up.OFF:
-	echo net-up
-	docker inspect festivals >/dev/null 2>&1 || \
-		docker network create festivals
-	
-############# Helpers ###############
-configset:
-	-mkdir configset
-
-collect: configset
-	cp ../certificates/pki/ca.crt configset/ca.crt
-	cp ../certificates/pki/issued/festivals-gateway.crt configset/server.crt
-	cp ../certificates/pki/private/festivals-gateway.key configset/server.key
-
-
-update:
-	mkdir update
-
-update-exe: update
-	cp ../../festivals-gateway/festivals-gateway update/festivals-gateway
-	docker cp update/festivals-gateway festivals-gateway:/usr/local/bin/festivals-gateway
+FORCE:

@@ -6,6 +6,8 @@ CONFIG_TEMPLATE_URL=https://raw.githubusercontent.com/Festivals-App/${APP}/refs/
 
 include ../develop.mk
 
+all: base server up
+
 base: ${APP}.conf
 	${BUILD} -f base.dck --tag my/${APP}-base .
 
