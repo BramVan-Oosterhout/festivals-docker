@@ -1,5 +1,5 @@
 APP=festivals-checks
-BUILD=docker buildx build 
+BUILD=docker buildx build
 
 include ../develop.mk
 
@@ -18,4 +18,7 @@ up:
 
 down:
 	docker compose --file ${APP}.yml down
+
+run:
+	docker exec -it ${APP} /bin/bash -c "/home/build/all-check.sh"
 
