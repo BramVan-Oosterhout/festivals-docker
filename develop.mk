@@ -10,3 +10,6 @@ reup: rmapp up enter
 
 reconfigure: server reup
 
+net-up:
+	${MAKE} -C ${ROOT}/festivals-network
+

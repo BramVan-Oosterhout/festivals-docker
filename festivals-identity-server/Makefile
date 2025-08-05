@@ -6,6 +6,8 @@ CONFIG_TEMPLATE_URL=https://raw.githubusercontent.com/Festivals-App/festivals-id
 
 include ../develop.mk
 
+all: base server up
+
 base: ${APP}.conf certs
 	${BUILD} -f base.dck --tag my/${APP}-base .
 
@@ -24,7 +26,7 @@ certs:
 server: certs
 	${BUILD} -f configure.dck --tag my/${APP} .
 
-up:
+up: net-up
 	docker compose --file ${APP}.yml up --detach
 
 down:

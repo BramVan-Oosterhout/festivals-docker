@@ -6,9 +6,20 @@ APP=undefined
 # ... etc ...
 
 export BUILD=docker buildx build --progress=plain --no-cache
+export ROOT=$(shell pwd)
+
+all: ubuntu certificates festivals-identity-server festivals-gateway \
+	festivals-fileserver festivals-database festivals-server
 
 ubuntu:
 	${BUILD} -f ubuntu.dck --tag festivals-ubuntu .
+
+certificates:
+	${MAKE} init all -C certificates
+
+festivals*:
+	${MAKE} all -C $*
+
 
 base:
 	${MAKE} base -C ${APP}
