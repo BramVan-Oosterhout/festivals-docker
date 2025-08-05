@@ -7,8 +7,8 @@ all: checks up
 
 certs:
 	cp ../certificates/pki/ca.crt .
-	cp ../certificates/pki/issued/api-client.crt .
-	cp ../certificates/pki/private/api-client.key .
+	cp ../certificates/pki/issued/FestivalsAppDatabaseClient.crt api-client.crt
+	cp ../certificates/pki/private/FestivalsAppDatabaseClient.key api-client.key
 
 checks: certs
 	${BUILD} -f checks.dck --tag my/${APP} .
