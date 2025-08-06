@@ -48,7 +48,7 @@ crts: ${CRTS}
 #	./easyrsa --passin=file:pwd --passout=file:pwd build-serverClient-full $* nopass
 
 %.key.pem : %.key
-	openssl rsa -in pki/private/$*.key -text > pki/private/$@
+	openssl rsa -in pki/private/$*.key --passin=file:pwd -text > pki/private/$@
 
 %.crt.pem : %.crt
 	openssl x509 -outform PEM -in pki/issued/$*.crt > pki/issued/$@
@@ -56,7 +56,7 @@ crts: ${CRTS}
 init: clean pwd easyrsa
 	./easyrsa init-pki
 	EASYRSA_BATCH=1 ./easyrsa --passout=file:pwd --passin=file:pwd build-ca
-	openssl rsa -in pki/private/ca.key -text > pki/private/ca.key.pem
+	openssl rsa -in pki/private/ca.key --passin=file:pwd -text > pki/private/ca.key.pem
 	openssl x509 -outform PEM -in pki/ca.crt > pki/ca.crt.pem
 
 clean:
