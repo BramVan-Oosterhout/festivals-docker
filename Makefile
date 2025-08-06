@@ -7,9 +7,10 @@ APP=undefined
 
 export BUILD=docker buildx build --progress=plain --no-cache
 export ROOT=$(shell pwd)
+SERVERS=festivals-identity-server festivals-gateway \
+	festivals-fileserver festivals-database festivals-server
 
-all: ubuntu certificates festivals-identity-server festivals-gateway \
-	festivals-fileserver festivals-database festivals-server checks
+all: ubuntu certificates ${SERVERS} checks
 
 ubuntu:
 	${BUILD} -f ubuntu.dck --tag festivals-ubuntu .
