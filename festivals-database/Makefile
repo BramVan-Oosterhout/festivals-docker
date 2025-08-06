@@ -8,10 +8,10 @@ include ../develop.mk
 
 all: base server up
 
-base: ${APP}.conf
+base: ${APP}-node.conf
 	${BUILD} -f base.dck --tag my/${APP}-base .
 
-${APP}.conf:
+${APP}-node.conf:
 	curl -L -o ${APP}-node.conf ${CONFIG_TEMPLATE_URL}
 
 certs:
