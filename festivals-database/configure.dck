@@ -26,12 +26,17 @@ RUN sed -i \
         -e '/^mysqlx-bind-address/c\mysqlx-bind-address = 0.0.0.0' \
                         /etc/mysql/mysql.conf.d/mysqld.cnf
 
-RUN systemctl start mysql &>/dev/null && sleep 5 && \
+# Get basic testdata
+RUN curl -L -o testdata.sql \
+  https://github.com/Festivals-App/festivals-database/raw/refs/heads/main/database/insert_testdata.sql
+
+RUN systemctl start mysql &>/dev/null && sleep 10 && \
 service mysql status && \
   /usr/bin/mysql \
   -e "alter user 'festivals.api.writer' require subject '/CN=FestivalsAppDatabaseClient';" \
   -e "alter user 'festivals.api.reader' require subject '/CN=FestivalsAppDatabaseClient';" \
-  -e "flush privileges";
+  -e "flush privileges;" \
+  -e "source testdata.sql;"
 
 COPY --chmod=644 festivals-mysqld.cnf \
                        /etc/mysql/mysql.conf.d/festivals-mysqld.cnf
