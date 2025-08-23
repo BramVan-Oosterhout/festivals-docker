@@ -1,21 +1,24 @@
 #!/bin/sh
 
-JWT=$(curl -H "Api-Key: TEST_API_KEY_001" \
-         -u "admin@email.com:we4711" \
-         --cert /usr/local/festivals-checks/api-client.crt \
-         --key /usr/local/festivals-checks/api-client.key \
-         --cacert /usr/local/festivals-checks/ca.crt \
-         https://festivals-identity-server:22580/users/login)
+JWT=$(./getJWT-check.sh)
+
+./getURL-check.sh $JWT https://festivals-fileserver:1910/info
+
+./getURL-check.sh $JWT https://festivals-fileserver:1910/files
 
 echo '==========================================================================='
 
-echo https://festivals-fileserver:1910/info
-curl -H "Api-Key: TEST_API_KEY_001" \
+echo POST https://festivals-fileserver:1910/images/upload
+curl -X POST \
+     -H "Content-Type: multipart/form-data" \
+     -H "Api-Key: TEST_API_KEY_001" \
      -H "Authorization: Bearer $JWT" \
      --cert /usr/local/festivals-checks/api-client.crt \
      --key /usr/local/festivals-checks/api-client.key \
      --cacert /usr/local/festivals-checks/ca.crt \
-     https://festivals-fileserver:1910/info | jq
+     -F image=@fileserver-check.sh \
+     https://festivals-fileserver:1910/images/upload | jq
 
-echo
 echo '==========================================================================='
+
+./getURL-check.sh $JWT https://festivals-fileserver:1910/files
