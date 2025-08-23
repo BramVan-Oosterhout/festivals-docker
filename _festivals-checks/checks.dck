@@ -2,7 +2,7 @@ FROM festivals-ubuntu
 
 WORKDIR /home/build
 
-RUN apt install -y jq
+RUN apt install -y jq libwww-perl libjson-perl
 
 COPY --chown=www-data:www-data --chmod=640 ca.crt /usr/local/festivals-checks/ca.crt
 COPY --chown=www-data:www-data --chmod=640 api-client.crt \
@@ -10,7 +10,7 @@ COPY --chown=www-data:www-data --chmod=640 api-client.crt \
 COPY --chown=www-data:www-data --chmod=600 api-client.key \
                                         /usr/local/festivals-checks/api-client.key
 COPY --chmod=777 *-check.sh .
-
+COPY --chmod=777 postJSONtoURL.pl .
 ############### Container setup ####################
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
