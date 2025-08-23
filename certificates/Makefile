@@ -11,6 +11,7 @@ DOMAINS= localhost \
 		festivals-fileserver \
 		festivals-gateway \
 		festivals-server \
+		festivals-website \
 		api-client \
 		FestivalsAppDatabaseClient
 
