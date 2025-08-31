@@ -3,15 +3,18 @@ EASYRSA=/usr/share/easy-rsa
 
 ## NOTE
 DOMAINS_NEW= localhost \
-		$(shell cd ..; ls -d festivals* )
+		$(shell cd ..; ls -d festivals* | grep -v network )
 
 DOMAINS= localhost \
-		festivals-identity \
+		festivals-identity-server \
 		festivals-database \
 		festivals-fileserver \
 		festivals-gateway \
-		festivals-server 
-		
+		festivals-server \
+		festivals-website \
+		api-client \
+		FestivalsAppDatabaseClient
+
 DOMAINS_OLD= localhost \
 		gateway.festivalsapp.dev \
 		identity-0.festivalsapp.dev \
@@ -36,18 +39,17 @@ vpath %.pem pki/private:pki/issued
 test:
 	echo ${DOMAINS_NEW}
 
-
-
 all: ${PEMS}
 crts: ${CRTS}
 		
 %.crt %.key : 
-	if [ -e ../$*/hostlist ]; then echo "--subject-alt-name=../$*/hostlist exists"; fi
-	./easyrsa --passin=file:pwd build-serverClient-full $* nopass
+	$(eval SAN=$(shell cat ../$*/hostlist))
+#	if [ -e ../$*/hostlist ]; then echo "--subject-alt-name=../$*/hostlist exists"; fi
+	./easyrsa ${SAN} --passin=file:pwd build-serverClient-full "$*" nopass
 #	./easyrsa --passin=file:pwd --passout=file:pwd build-serverClient-full $* nopass
 
 %.key.pem : %.key
-	openssl rsa -in pki/private/$*.key -text > pki/private/$@
+	openssl rsa -in pki/private/$*.key --passin=file:pwd -text > pki/private/$@
 
 %.crt.pem : %.crt
 	openssl x509 -outform PEM -in pki/issued/$*.crt > pki/issued/$@
@@ -55,7 +57,7 @@ crts: ${CRTS}
 init: clean pwd easyrsa
 	./easyrsa init-pki
 	EASYRSA_BATCH=1 ./easyrsa --passout=file:pwd --passin=file:pwd build-ca
-	openssl rsa -in pki/private/ca.key -text > pki/private/ca.key.pem
+	openssl rsa -in pki/private/ca.key --passin=file:pwd -text > pki/private/ca.key.pem
 	openssl x509 -outform PEM -in pki/ca.crt > pki/ca.crt.pem
 
 clean:

@@ -1,0 +1,50 @@
+FROM my/festivals-database-base
+
+WORKDIR /home/build
+
+COPY --chown=www-data:www-data --chmod=640 ca.crt /usr/local/festivals-database-node/ca.crt
+COPY --chown=www-data:www-data --chmod=640 festivals-database.crt \
+                                                /usr/local/festivals-database-node/server.crt
+COPY --chown=www-data:www-data --chmod=600 festivals-database.key \
+                                                /usr/local/festivals-database-node/server.key
+
+COPY --chown=mysql:mysql --chmod=640 ca.pem /var/lib/mysql/ca.pem
+COPY --chown=mysql:mysql --chmod=640 server-cert.pem \
+                                /var/lib/mysql/server-cert.pem
+COPY --chown=mysql:mysql --chmod=640 server-key.pem \
+                                /var/lib/mysql/server-key.pem
+# TODO
+# Setting the bind address in /etc/mysql/mysql.conf.d/festivals-mysqld.cnf
+# does not make a difference, bind-address is already set in 
+# /etc/mysql/mysql.conf.d/mysqld.cnf to 127.0.0.1
+# Moreover, the bind address needs an IP address, not a DNS domain
+# What is the intention here?
+# make mysql listen to very request on the network:
+# with: bind-address = 0.0.0.0
+RUN sed -i \
+        -e '/^bind-address/c\bind-address = 0.0.0.0' \
+        -e '/^mysqlx-bind-address/c\mysqlx-bind-address = 0.0.0.0' \
+                        /etc/mysql/mysql.conf.d/mysqld.cnf
+
+# Get basic testdata
+RUN curl -L -o testdata.sql \
+  https://github.com/Festivals-App/festivals-database/raw/refs/heads/main/database/insert_testdata.sql
+
+RUN systemctl start mysql &>/dev/null && sleep 10 && \
+service mysql status && \
+  /usr/bin/mysql \
+  -e "alter user 'festivals.api.writer' require subject '/CN=FestivalsAppDatabaseClient';" \
+  -e "alter user 'festivals.api.reader' require subject '/CN=FestivalsAppDatabaseClient';" \
+  -e "flush privileges;" \
+  -e "source testdata.sql;"
+
+COPY --chmod=644 festivals-mysqld.cnf \
+                       /etc/mysql/mysql.conf.d/festivals-mysqld.cnf
+COPY festivals-database-node.conf /etc/festivals-database-node.conf
+                                
+############### Container setup ####################
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+ENTRYPOINT [ "/entrypoint.sh" ]
+

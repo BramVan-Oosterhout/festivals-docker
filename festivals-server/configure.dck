@@ -1,0 +1,25 @@
+FROM my/festivals-server-base
+
+WORKDIR /home/build
+
+COPY --chown=www-data:www-data --chmod=640 ca.crt /usr/local/festivals-server/ca.crt
+COPY --chown=www-data:www-data --chmod=640 festivals-server.crt \
+                                                /usr/local/festivals-server/server.crt
+COPY --chown=www-data:www-data --chmod=600 festivals-server.key \
+                                                /usr/local/festivals-server/server.key
+COPY --chown=www-data:www-data --chmod=640 ca.crt /usr/local/festivals-server/ca.crt
+
+COPY --chown=www-data:www-data --chmod=640 database-client.crt \
+                                                /usr/local/festivals-server/database-client.crt
+COPY --chown=www-data:www-data --chmod=600 database-client.key \
+                                                /usr/local/festivals-server/database-client.key
+
+
+COPY festivals-server.conf /etc/festivals-server.conf
+                    
+############### Container setup ####################
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+ENTRYPOINT [ "/entrypoint.sh" ]
+

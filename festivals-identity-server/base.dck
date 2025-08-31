@@ -1,0 +1,12 @@
+FROM festivals-ubuntu
+
+WORKDIR /home/build
+
+# DISABLE scripter firewall configuration with:
+#     echo '#!/usr/bin/sh' > /usr/sbin/ufw
+# It interferes with docker uiptables configuration
+RUN echo '#!/usr/bin/sh' > /usr/sbin/ufw && \
+     curl -L -o install.sh \
+    https://raw.githubusercontent.com/Festivals-App/festivals-identity-server/refs/heads/master/operation/install.sh && \
+    chmod +x install.sh && \
+    ./install.sh insecure insecure insecure

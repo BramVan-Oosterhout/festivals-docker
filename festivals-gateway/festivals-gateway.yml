@@ -1,0 +1,25 @@
+# compose file for festivals-gateway
+version: '1'
+
+services:
+
+  identity:
+    restart: always
+    image: my/festivals-gateway
+    container_name: festivals-gateway
+    hostname: festivals-gateway
+    ports:
+      - 443:443
+    networks:
+      festivals_backend:
+        aliases:
+         - gateway.festivals-gateway
+         - discovery.festivals-gateway
+         - files.festivals-gateway
+         - api.festivals-gateway
+ #       ipv4_address: 172.20.0.1
+      
+networks:
+  festivals_backend:
+    external: true
+    name: festivals-network

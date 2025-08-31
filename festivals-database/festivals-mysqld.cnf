@@ -1,0 +1,11 @@
+[mysqld]
+#bind-address = festivals-database
+# set to: bind-address = 0.0.0.0 in:
+#   /etc/mysqld/mysql.conf.d/mysqld.cnf
+#
+# SSL Settings
+#
+ssl_ca = /var/lib/mysql/ca.pem
+ssl_cert = /var/lib/mysql/server-cert.pem
+ssl_key = /var/lib/mysql/server-key.pem
+require_secure_transport = ON

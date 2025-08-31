@@ -1,3 +1,7 @@
+*~
+*.crt
+*.key
+*.pem
 certificates
 test
 */configset
@@ -6,3 +10,5 @@ test
 */install_node.sh
 */install.sh
 */.vscode
+_festivals*
+!_festivals-checks

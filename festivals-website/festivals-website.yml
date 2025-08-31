@@ -1,0 +1,23 @@
+# compose file for festivals-website
+version: '1'
+
+services:
+
+  identity:
+    restart: always
+    image: my/festivals-website
+    container_name: festivals-website
+    hostname: festivals-website
+    ports:
+      - 10443:443
+    networks:
+      festivals_backend:
+        aliases:
+          - website.festivals-gateway
+          - festivalsapp.dev
+          - www.festivalsapp.dev
+      
+networks:
+  festivals_backend:
+    external: true
+    name: festivals-network

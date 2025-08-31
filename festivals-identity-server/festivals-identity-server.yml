@@ -1,0 +1,20 @@
+# compose file for festivals-identity-server
+version: '1'
+
+services:
+
+  identity:
+    restart: always
+    image: my/festivals-identity-server
+    container_name: festivals-identity-server
+    hostname: festivals-identity-server
+    networks:
+      festivals_backend:
+        aliases:
+          - identity.festivals-gateway
+ #       ipv4_address: 172.20.0.1
+      
+networks:
+  festivals_backend:
+    external: true
+    name: festivals-network
