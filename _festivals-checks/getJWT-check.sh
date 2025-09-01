@@ -8,4 +8,4 @@ JWT=$(curl -s \
          --cacert /usr/local/festivals-checks/ca.crt \
          https://festivals-identity-server:22580/users/login)
 
-echo $JWT
+echo -n $JWT
