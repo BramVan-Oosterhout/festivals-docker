@@ -32,6 +32,38 @@ sub new{
     return $self;
 }
 
+sub post_object {
+    my $self = shift;
+    my ($object, $endpoint, $prefix ) = @_;
+    $endpoint = $self->{api} . $endpoint;
+
+    my %dbObject;
+    while( my ( $k, $v) = each %$object ) {
+        $dbObject{$prefix.lc($k)} = $v
+    };
+    print 'DBobject: ', dump(%dbObject), "\n";
+
+    my $response = _modify_hash_for_url( $self, 'POST', \%dbObject, $endpoint );
+    print 'Object response: ',dump($response), "\n";
+    return $response;
+}
+
+sub post_artist {
+    my $self = shift;
+    my $artist = shift;
+    my $endpoint = $self->{api} . '/artists';
+
+    my %dbartist;
+    while( my ( $k, $v) = each %$artist ) {
+        $dbartist{'artist_'.lc($k)} = $v
+    };
+    #print 'DBartist: ', dump(%dbartist), "\n";
+
+    my $response = _modify_hash_for_url( $self, 'POST', \%dbartist, $endpoint );
+    #print 'artist response: ',dump($response), "\n";
+    return $response;
+}
+
 sub post_location {
     my $self = shift;
     my $location = shift;
@@ -98,7 +130,7 @@ sub _modify_hash_for_url {
                     SSL_key_file => $self->{SSL_key_file});
    
     my $response = $ua->request($request);
-    #print dump($response), "\n";
+    print dump($response), "\n";
     return decode_json($response->decoded_content);
 
     exit;
