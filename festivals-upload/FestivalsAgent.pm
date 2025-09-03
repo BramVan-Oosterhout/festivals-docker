@@ -32,6 +32,16 @@ sub new{
     return $self;
 }
 
+sub new_post_object {
+    my $self = shift;
+    my ($object, $endpoint ) = @_;
+    $endpoint = $self->{api} . $endpoint;
+
+    my $response = _modify_hash_for_url( $self, 'POST', $object, $endpoint );
+    #print 'Object response: ',dump($response), "\n";
+    return $response;
+}
+
 sub post_object {
     my $self = shift;
     my ($object, $endpoint, $prefix ) = @_;
@@ -41,10 +51,10 @@ sub post_object {
     while( my ( $k, $v) = each %$object ) {
         $dbObject{$prefix.lc($k)} = $v
     };
-    print 'DBobject: ', dump(%dbObject), "\n";
+    #print 'DBobject: ', dump(%dbObject), "\n";
 
     my $response = _modify_hash_for_url( $self, 'POST', \%dbObject, $endpoint );
-    print 'Object response: ',dump($response), "\n";
+    #print 'Object response: ',dump($response), "\n";
     return $response;
 }
 
@@ -80,6 +90,14 @@ sub post_location {
     return $response;
 }
 
+sub get_url{
+    my $self = shift;
+    my ( $endpoint ) = @_;
+    
+    my $response_content = _get_url( $self, $self->{api} . $endpoint );
+    return decode_json($response_content);
+}
+
 sub get_info {
     my $self = shift;
     my $endpoint = $self->{gateway} . '/info';
@@ -107,7 +125,8 @@ sub _get_url{
                     SSL_key_file => $self->{SSL_key_file});
 
     my $response = $ua->request($request);
-    return $response->content;
+    #print 'GETURL - RESPONSE: ', dump($response), "\n";
+    return $response->decoded_content;
 }
 
 sub _modify_hash_for_url {
@@ -130,16 +149,16 @@ sub _modify_hash_for_url {
                     SSL_key_file => $self->{SSL_key_file});
    
     my $response = $ua->request($request);
-    print dump($response), "\n";
+    #print dump($response), "\n";
     return decode_json($response->decoded_content);
 
     exit;
 
     if ($response->is_success) {
-        print "JSON POST successful!\n";
-        print "Response: " . $response->decoded_content . "\n";
+        #print "JSON POST successful!\n";
+        #print "Response: " . $response->decoded_content . "\n";
     } else {
-        print "JSON POST failed: " . $response->status_line . "\n";
+        #print "JSON POST failed: " . $response->status_line . "\n";
     }
 
 }
