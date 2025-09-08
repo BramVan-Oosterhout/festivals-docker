@@ -6,6 +6,7 @@ use Data::Dump qw(dump);
 use Spreadsheet::Read;
 use lib '.';
 use FestivalsAgent;
+use Time::Piece;
 
 my $fa = FestivalsAgent->new('festivals-gateway');
 
@@ -13,7 +14,15 @@ my $fileName = '/home/bram/programs/Festivals-App/festivals-docker/festivals-upl
 
 my $spreadsheetMap = spreadsheet_mapping();
 my $wb = Spreadsheet::Read->new( $spreadsheetMap->{workbook} );
+
+my $f = upload_festival( $wb, $fa, $spreadsheetMap->{festival} );
+#print "FESTIVAL($festival_id)): ", dump($f), "\n";
+my $l = upload_locations( $wb, $fa, $spreadsheetMap->{locations} );
+#print 'LOCATIONS: ', dump($l), "\n";
 my $a = upload_artists( $wb, $fa, $spreadsheetMap->{artists} );
+#print 'ARTISTS: ', dump($a), "\n";
+my $e = upload_events( $wb, $fa, $spreadsheetMap->{events} );
+#print 'EVENTS: ', dump($e), "\n";
 exit;
 
 my $locations = post_objects( $wb, $fa, 'Locations' );
@@ -22,6 +31,189 @@ my $locations = post_objects( $wb, $fa, 'Locations' );
 my $artists = post_objects( $wb, $fa, 'Artists' );
 #print 'ARTISTS: ',dump($artists), "\n===\n";
 exit;
+
+sub upload_festival {
+    my ( $wb, $fa, $map ) = @_; 
+    #print 'MAP: ',dump($map),"\n";
+    my $ss = $wb->sheet($map->{sheet});
+    #print 'SS: ', dump($ss), "\n";
+    my %dbFestival = ();
+    for ( my $r = 1; $r <= $ss->maxrow; $r++ ) {
+        my @row = $ss->cellrow($r);
+    #print 'ROW: ', dump(@row), ' maps to ', $map->{rows}{$row[0]}, "\n";
+        $dbFestival{$map->{rows}{$row[0]}} = $row[1]
+            if $map->{rows}{$row[0]};
+    }
+    #print 'FIELDS: ', dump(%dbFestival),"\n";
+    my $t = Time::Piece->strptime($dbFestival{festival_start},
+                                    '%Y-%m-%d'); 
+    $dbFestival{festival_start} = $t->epoch;                              
+    $t = Time::Piece->strptime($dbFestival{festival_end},
+                                    '%Y-%m-%d'); 
+    $dbFestival{festival_end} = $t->epoch; 
+    my $festival = $fa->new_post_object( \%dbFestival, '/festivals' );
+    #print 'FESTIVAL: ', dump($festival), "\n";
+    return $festival->{data}[0]
+        if ref $festival eq 'HASH';
+    return $festival;
+}
+
+sub upload_locations{
+    my ( $wb, $fa, $map ) = @_;
+    my $ss = $wb->sheet($map->{sheet});#print 'SS: ', dump($ss), "\n";#print 'SS: ', dump($ss), "\n";
+    #print 'SS: ', dump($ss), "\n";
+    my $fields = get_column_numbers($ss, $map->{columns});
+    #print 'FIELDS: ', dump($fields), "\n";
+
+    my @locations = ();
+    for ( my $r = 2; $r <= $ss->maxrow; $r++ ) {
+        my %dbLocation = ();
+        while( my ($k, $v) = each %{$map->{columns}} ) {
+            my @row = $ss->cellrow($r);
+            $dbLocation{$v}= $row[$fields->{$k}]
+        }
+        my $location = $fa->new_post_object( \%dbLocation, 
+                                             '/locations' );
+    #print 'LOCATION: ', dump($location), "\n";
+        if (ref $location eq 'HASH') {
+            push @locations, $location->{data}[0]
+        } else {
+            push @locations, $location;
+        }
+    }
+    return \@locations;
+}
+
+sub upload_events {
+    my ( $wb, $fa, $map ) = @_;
+
+    my $ss = $wb->sheet("Events");
+
+    my $fields = get_column_numbers($ss, $map->{columns});
+    print 'FIELDS: ', dump($fields), "\n";
+    my %allTags = ();
+    foreach my $tag ( @{$fa->get_url( '/tags' )->{data}} ) {
+        $allTags{$tag->{tag_name}} = $tag->{tag_id};
+    }
+    print 'TAGSHASHED: ', dump(%allTags), "\n";
+    my %allLocations = ();
+    foreach my $location ( @{$fa->get_url( '/locations' )->{data}} ) {
+        $allLocations{$location->{location_name}} = 
+                                        $location->{location_id};
+    }
+    print 'LOCATIONSHASHED: ', dump(%allLocations), "\n";
+    my $allArtists = get_all( $fa, 'artist' );
+
+    for ( my $r = 2; $r <= $ss->maxrow; $r++ ) {
+        my %dbEvent = ();
+        my @eventTag = ();
+        my @eventLocation = ();
+        my @eventArtist = ();
+
+        my @row = $ss->cellrow($r);
+        while( my ($k, $v) = each %{$map->{columns}} ) {
+            $dbEvent{$v}= $row[$fields->{$k}]
+                             unless ( $v =~ m!\A#! ) ;
+        } 
+        $dbEvent{event_start} = 
+                convert_to_epoch($dbEvent{event_start},
+                                '%d/%m/%Y %H:%M %p');
+        $dbEvent{event_end} = 
+                convert_to_epoch($dbEvent{event_end},
+                                '%d/%m/%Y %H:%M %p');
+        print 'EVENT: ', dump(%dbEvent), "\n";
+        my $event = $fa->new_post_object( \%dbEvent, '/events' )->{data}[0];
+        print 'EVENTRESPONSE: ',dump($event),"\n";
+        associate($fa, 
+                'festivals', $f->{festival_id },
+                'events', $event->{event_id});
+
+        while( my ($k, $v) = each %{$map->{columns}} ) {
+           if ( $v =~ m!\A#tag! ) {
+                next unless $row[$fields->{$k}];
+                my ( $tagType ) = ( $v =~ m!\A#tag::(.*)! ); 
+                my $tag = $tagType . '::' . $row[$fields->{$k}];
+                push @eventTag, {'tag_name' => $tag };
+                next;
+            }
+            if ( $v eq '#location' ) {
+                push @eventLocation, $row[$fields->{$k}];
+            }
+            if ( $v eq '#artist' ) {
+                push @eventArtist, $row[$fields->{$k}];
+            }
+        }
+        print 'EVENTTAG: ',dump(@eventTag), "\n";
+        print 'EVENTLOCATION: ',dump(@eventLocation), "\n";
+        print 'EVENTARTIST: ',dump(@eventArtist), "\n";
+
+### SMELL: CANNOT TAG EVENTS!!!
+#        if ( scalar @eventTag ) {
+#            add_tags_and_associate_generic( 
+#                $fa, 'events', 
+#                $event->{event_id}, \@eventTag, \%allTags );
+#        }
+        if ( scalar @eventLocation ) {
+            foreach my $l (@eventLocation) {
+                if ( $allLocations{$l}) {
+                associate_location($fa, 'events', 
+                    $event->{event_id}, $allLocations{$l} )
+                } else {
+                    print "Location $l not found\n";
+                }
+
+            }
+        }
+        if ( scalar @eventArtist ) {
+            foreach my $a (@eventArtist) {
+                if ( $$allArtists{$a}) {
+                associate($fa, 
+                    'events', $event->{event_id}, 
+                    'artist', $$allArtists{$a} )
+                } else {
+                    print "Artist $a not found\n";
+                }
+            }
+        }
+        #exit;
+    }
+}
+
+sub get_all {
+    my ($fa, $type) = @_;
+    my %all = ();
+    foreach my $object ( @{$fa->get_url( '/'.$type.'s' )->{data}} ) {
+        $all{$object->{$type.'_name'}} = 
+                    $object->{$type.'_id'};
+    }
+    return \%all;
+}
+
+sub convert_to_epoch {
+    my ( $dateString, $format ) = @_;
+
+    my $t = Time::Piece->strptime( $dateString, $format );
+    return $t->epoch;
+}
+
+sub associate {
+    my ($fa, $source, $sourceId, $target, $targetId ) = @_;
+
+    my $associationEndpoint = 
+        join '/', $source, $sourceId, $target, $targetId;
+    print 'ENDPOINT: ', $associationEndpoint, "\n";
+    my $a = $fa->new_post_object( {}, '/'.$associationEndpoint );
+    print 'ASSOCIATION: ', dump($a), "\n";
+}
+sub associate_location {
+    my ($fa, $type, $id, $locationId ) = @_;
+
+    my $associationEndpoint = 
+        join '/', $type, $id, 'location', $locationId;
+    print 'ENDPOINT: ', $associationEndpoint, "\n";
+    my $a = $fa->new_post_object( {}, '/'.$associationEndpoint );
+    print 'ASSOCIATION: ', dump($a), "\n";
+}
 
 sub upload_artists {
     my ( $wb, $fa, $map ) = @_;
@@ -70,9 +262,9 @@ print $counter;
                 next;
             }
         }
-#print 'DBARTIST: ', dump(%dbArtist), "\n";
-#print 'artistTag: ', dump(@artistTag), "\n";
-#print 'ARTISTIMAGE: ', dump(@artistImage), "\n";
+    #print 'DBARTIST: ', dump(%dbArtist), "\n";
+    #print 'artistTag: ', dump(@artistTag), "\n";
+    #print 'ARTISTIMAGE: ', dump(@artistImage), "\n";
 
         if ( scalar @artistTag ) {
             add_tags_and_associate( $fa, $artist->{artist_id}, \@artistTag, \%allTags );
@@ -125,6 +317,38 @@ sub add_tags_and_associate {
         }
         my $a = $fa->new_post_object( {}, '/'.$associationEndpoint );
         #print 'ASSOCIATION: ', dump($a), "\n";
+    } 
+
+}
+
+sub add_tags_and_associate_generic {
+    my ($fa, $type, $id, $tag, $allTags ) = @_;
+    #print "ARTISTID: $artist_id\nartistTag: ", dump($artistTag), "\n";
+    my %associations = ();
+    my $associationEndpoint;
+    foreach my $t ( @$tag ) {
+        print 'USING TAG: ', dump($t), ' with alltags(t)- ', $allTags->{$t->{tag_name}}, "\n";
+        if ( $allTags->{$t->{tag_name}} ) {
+            $associationEndpoint = 
+                join '/', $type, $id,'tags', 
+                          $allTags->{$t->{tag_name}};
+print "Found alltags t: $t = ",$allTags->{$t->{tag_name}},"\n    with endpoint: $associationEndpoint\n";
+
+        } else {
+print 'POSTING new object: ', dump($t), "\n";
+            my $newTag = $fa->new_post_object( $t, '/tags' )->{data}[0]; 
+print 'TAG: ', dump($newTag), "\n";
+print 'TAGNAME: ',$newTag->{tag_name}, "\n";
+print 'TAGID: ',$newTag->{tag_id}, "\n";
+            $allTags->{"$tag->{tag_name}"} = $tag->{tag_id};
+            $associationEndpoint = 
+                join '/', $type, $id, 'tags', $tag->{tag_id}; 
+
+print "New tag t: ", dump($t),"\n    with endpoint: $associationEndpoint\n";
+
+        }
+        my $a = $fa->new_post_object( {}, '/'.$associationEndpoint );
+        print 'ASSOCIATION: ', dump($a), "\n";
     } 
 
 }
@@ -191,6 +415,22 @@ sub get_collumn_names {
 sub spreadsheet_mapping {
     my $map = {
         workbook => 'prepArtists2023.ods',
+        festival => {
+            sheet => 'Festival',
+            rows => {
+                name => 'festival_name',
+                start => 'festival_start',
+                end => 'festival_end',
+                description => 'festival_description',
+            }
+        },
+        locations => {
+            sheet => 'Locations',
+            columns => {
+                name => 'location_name',
+                description => 'location_description'
+            }
+        },
         artists => {
             sheet => 'Artists',
             columns => {
@@ -200,6 +440,18 @@ sub spreadsheet_mapping {
                 featured => '#tag',
                 status => '#tag',
                 category => '#tag'
+            }
+        },
+        events => {
+            sheet => 'Events',
+            columns => {
+                name => 'event_name',
+                status => '#tag::status',
+                start_date => 'event_start',
+                end_date => 'event_end',
+                location_label => '#location',
+                profile_name => '#artist',
+                tag => '#tag::category'
             }
         }
      };
