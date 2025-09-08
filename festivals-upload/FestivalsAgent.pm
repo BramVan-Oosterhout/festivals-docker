@@ -38,7 +38,7 @@ sub new_post_object {
     $endpoint = $self->{api} . $endpoint;
 
     my $response = _modify_hash_for_url( $self, 'POST', $object, $endpoint );
-    #print 'Object response: ',dump($response), "\n";
+#print 'Object response: ',dump($response), "\n";
     return $response;
 }
 
@@ -135,6 +135,7 @@ sub _modify_hash_for_url {
     my $jsonContent = encode_json($hash); # Encode the Perl hash to JSON
     $jsonContent =~ s!\"true\"!true!g;
     $jsonContent =~ s!\"false\"!false!g;
+    $jsonContent =~ s!\"(\d+)\"!$1!g;
     
     my $request = HTTP::Request->new( 
                   $method, $url,
