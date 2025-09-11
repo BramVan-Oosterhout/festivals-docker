@@ -13,29 +13,13 @@ include allservers.mk
 ubuntu:
 	${BUILD} -f ubuntu.dck --tag festivals-ubuntu .
 
-certificates: FORCE
-	${MAKE} -C certificates init all
+certificates:
+	${MAKE} -C festivals-certificates init all
 
 festivals%: FORCE
 	${MAKE} -C $@ all
 
 checks:
-	${MAKE} -C _festivals-checks all run
-
-
-base:
-	${MAKE} -C ${APP} base
-
-net-up:
-	${MAKE} -C ${APP} net-up
-
-server:
-	${MAKE} -C ${APP} server
-
-up: 
-	${MAKE}  ${APP} up
-
-down:
-	${MAKE} down ${APP}
+	${MAKE} -C festivals-checks all run
 
 FORCE:
