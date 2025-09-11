@@ -1,18 +1,15 @@
-# Create the festivals-idenrity-server
+# Create the festivals-UI
 
-APP=festivals-gateway
+APP=festivals-UI
 BUILD=docker buildx build
-CONFIG_TEMPLATE_URL=https://raw.githubusercontent.com/Festivals-App/${APP}/refs/heads/main/config_template.toml
+FOSWIKI_YML=https://raw.githubusercontent.com/timlegge/docker-foswiki/refs/heads/master/docker-compose.1-simple.yml
 
 include ../develop.mk
 
 all: base server up
 
-base: ${APP}.conf
-	${BUILD} -f base.dck --tag my/${APP}-base .
-
-${APP}.conf:
-	curl -L -o ${APP}.conf ${CONFIG_TEMPLATE_URL}
+base:
+	curl -L -o ${APP}.yml ${FOSWIKI_YML}
 
 certs:
 	cp ../festivals-certificates/pki/ca.crt .

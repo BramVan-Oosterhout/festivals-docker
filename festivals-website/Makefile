@@ -15,9 +15,9 @@ ${APP}-node.conf:
 	curl -L -o ${APP}-node.conf ${CONFIG_TEMPLATE_URL}
 
 certs:
-	cp ../certificates/pki/ca.crt .
-	cp ../certificates/pki/issued/${APP}.crt .
-	cp ../certificates/pki/private/${APP}.key .
+	cp ../festivals-certificates/pki/ca.crt .
+	cp ../festivals-certificates/pki/issued/${APP}.crt .
+	cp ../festivals-certificates/pki/private/${APP}.key .
 
 server: certs
 	${BUILD} -f configure.dck --tag my/${APP} .

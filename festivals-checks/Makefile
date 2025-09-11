@@ -6,9 +6,9 @@ include ../develop.mk
 all: checks up
 
 certs:
-	cp ../certificates/pki/ca.crt .
-	cp ../certificates/pki/issued/FestivalsAppDatabaseClient.crt api-client.crt
-	cp ../certificates/pki/private/FestivalsAppDatabaseClient.key api-client.key
+	cp ../festivals-certificates/pki/ca.crt .
+	cp ../festivals-certificates/pki/issued/FestivalsAppDatabaseClient.crt api-client.crt
+	cp ../festivals-certificates/pki/private/FestivalsAppDatabaseClient.key api-client.key
 
 checks: certs
 	${BUILD} -f checks.dck --tag my/${APP} .

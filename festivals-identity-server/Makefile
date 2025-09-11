@@ -15,9 +15,9 @@ ${APP}.conf:
 	curl -L -o ${APP}.conf ${CONFIG_TEMPLATE_URL}
 
 certs:
-	cp ../certificates/pki/ca.crt .
-	cp ../certificates/pki/issued/festivals-identity-server.crt .
-	cp ../certificates/pki/private/festivals-identity-server.key .
+	cp ../festivals-certificates/pki/ca.crt .
+	cp ../festivals-certificates/pki/issued/festivals-identity-server.crt .
+	cp ../festivals-certificates/pki/private/festivals-identity-server.key .
 	openssl x509 -in festivals-identity-server.crt \
 				-out festivals-identity-server.authentication.publickey.pem -outform PEM
 	openssl rsa -in festivals-identity-server.key -text | \

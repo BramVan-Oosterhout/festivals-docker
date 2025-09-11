@@ -15,9 +15,9 @@ ${APP}-node.conf:
 	curl -L -o ${APP}-node.conf ${CONFIG_TEMPLATE_URL}
 
 certs:
-	cp ../certificates/pki/ca.crt .
-	cp ../certificates/pki/issued/${APP}.crt .
-	cp ../certificates/pki/private/${APP}.key .
+	cp ../festivals-certificates/pki/ca.crt .
+	cp ../festivals-certificates/pki/issued/${APP}.crt .
+	cp ../festivals-certificates/pki/private/${APP}.key .
 	openssl x509 -in ca.crt -out ca.pem -outform PEM
 	openssl x509 -in ${APP}.crt -out server-cert.pem -outform PEM
 	openssl rsa -in ${APP}.key -text > server-key.pem
