@@ -44,5 +44,9 @@ develop.mk defines helpful targets whilst in the Festivals-App server directorie
 | net-up | start the internal container network |
 
 # Operation
+If you don't use one of the shortcuts above, then you need to create the ubuntu image that is the base for all other inages in festivals-docker.
 
+```
+make ubuntu
+```
 
