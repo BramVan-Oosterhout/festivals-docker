@@ -2,7 +2,7 @@
 *.crt
 *.key
 *.pem
-certificates
+festivals-certificates
 test
 */configset
 */update
