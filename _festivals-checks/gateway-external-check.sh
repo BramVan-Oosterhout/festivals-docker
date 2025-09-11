@@ -17,4 +17,6 @@ JWT=$(docker exec -it festivals-checks /home/build/getJWT-check.sh)
 
 ./getURL-external-check.sh $JWT https://files.festivals-gateway/files
 
+./getURL-external-check.sh $JWT https://api.festivalsapp.dev/info
+
 echo '==========================================================================='
