@@ -5,6 +5,7 @@
 # discovery.festivals-gateway
 # api.festivals-gateway
 # files.festivals-gateway
+# api.festivalsapp.dev
 # use : sudo sed -i '$r etc.hosts.external' /etc/hosts
 
 JWT=$(docker exec -it festivals-checks /home/build/getJWT-check.sh)
