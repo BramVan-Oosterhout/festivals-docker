@@ -17,7 +17,7 @@ services:
          - discovery.festivals-gateway
          - files.festivals-gateway
          - api.festivals-gateway
- #       ipv4_address: 172.20.0.1
+         - api.festivalsapp.dev
       
 networks:
   festivals_backend:
