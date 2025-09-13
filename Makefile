@@ -22,4 +22,7 @@ festivals%: FORCE
 checks:
 	${MAKE} -C festivals-checks all run
 
+upload:
+	${MAKE} -C festivals-upload upload
+
 FORCE:
