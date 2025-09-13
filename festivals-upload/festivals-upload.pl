@@ -17,10 +17,13 @@ GetOptions( "inputfile=s" => \$inputFile,
 
 
 my $fa = FestivalsAgent->new('festivals-gateway');
+$fa->{JWT} = $fa->get_jwt_from_festivals( $insideContainer );
+
 
 my $fileName = $inputFile;
 
 my $spreadsheetMap = spreadsheet_mapping();
+#print 'MAP: ', dump($spreadsheetMap), "\n";
 my $wb = Spreadsheet::Read->new( $spreadsheetMap->{workbook} );
 
 my $f = upload_festival( $wb, $fa, $spreadsheetMap->{festival} );
@@ -51,7 +54,7 @@ sub upload_festival {
     #print 'SS: ', dump($ss), "\n";
     my %dbFestival = ();
     for ( my $r = 1; $r <= $ss->maxrow; $r++ ) {
-        my @row = $ss->cellrow($r);
+        my @row = $ss->row($r);
     #print 'ROW: ', dump(@row), ' maps to ', $map->{rows}{$row[0]}, "\n";
         $dbFestival{$map->{rows}{$row[0]}} = $row[1]
             if $map->{rows}{$row[0]};
@@ -276,6 +279,7 @@ print $counter;
                              unless ( $v =~ m!\A#! ) ;
         }
         my $artist = $fa->new_post_object( \%dbArtist, '/artists' )->{data}[0];
+        #print 'ARTIST: ',dump($artist), "\n";
         while( my ($k, $v) = each %{$map->{columns}} ) {
            if ( $v eq '#tag' ) {
                 next unless $row[$fields->{$k}];
@@ -324,23 +328,23 @@ sub add_tags_and_associate {
     my %associations = ();
     my $associationEndpoint;
     foreach my $t ( @$artistTag ) {
-#print 'USING TAG: ', dump($t), ' with alltags(t)- ', $allTags->{$t->{tag_name}}, "\n";
+    #print 'USING TAG: ', dump($t), ' with alltags(t)- ', $allTags->{$t->{tag_name}}, "\n";
         if ( $allTags->{$t->{tag_name}} ) {
             $associationEndpoint = join '/', 'artists', $artist_id, 
                                              'tags', $allTags->{$t->{tag_name}};
-#print "Found alltags t: $t = ",$allTags->{$t->{tag_name}},"\n    with endpoint: $associationEndpoint\n";
+    #print "Found alltags t: $t = ",$allTags->{$t->{tag_name}},"\n    with endpoint: $associationEndpoint\n";
 
         } else {
-#print 'POSTING new object: ', dump($t), "\n";
+    #print 'POSTING new object: ', dump($t), "\n";
             my $tag = $fa->new_post_object( $t, '/tags' )->{data}[0]; 
-#print 'TAG: ', dump($tag), "\n";
-#print 'TAGNAME: ',$tag->{tag_name}, "\n";
-#print 'TAGID: ',$tag->{tag_id}, "\n";
+    #print 'TAG: ', dump($tag), "\n";
+    #print 'TAGNAME: ',$tag->{tag_name}, "\n";
+    #print 'TAGID: ',$tag->{tag_id}, "\n";
             $allTags->{"$tag->{tag_name}"} = $tag->{tag_id};
             $associationEndpoint = join '/', 'artists', $artist_id, 
                                              'tags', $tag->{tag_id}; 
 
-#print "New tag t: ", dump($t),"\n    with endpoint: $associationEndpoint\n";
+    #print "New tag t: ", dump($t),"\n    with endpoint: $associationEndpoint\n";
 
         }
         my $a = $fa->new_post_object( {}, '/'.$associationEndpoint );
@@ -442,7 +446,7 @@ sub get_collumn_names {
 
 sub spreadsheet_mapping {
     my $map = {
-        workbook => 'prepArtists2023.ods',
+        workbook => $inputFile,
         festival => {
             sheet => 'Festival',
             rows => {
