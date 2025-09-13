@@ -1,0 +1,18 @@
+FROM my/festivals-upload-base
+
+WORKDIR /home/build
+
+RUN apt install -y libdata-dump-perl libspreadsheet-read-perl
+
+COPY --chmod=640 ca.crt .
+COPY --chmod=640 api-client.crt .
+COPY --chmod=600 api-client.key .
+
+COPY festivals-upload.pl FestivalsAgent.pm demo.xlsx .
+                                
+############### Container setup ####################
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+ENTRYPOINT [ "/entrypoint.sh" ]
+

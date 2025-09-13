@@ -1,0 +1,5 @@
+FROM festivals-ubuntu
+
+WORKDIR /home/build
+
+RUN echo '#!/usr/bin/sh' > /usr/sbin/ufw 

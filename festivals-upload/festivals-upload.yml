@@ -1,0 +1,19 @@
+# compose file for festivals-upload
+version: '1'
+
+services:
+
+  identity:
+    restart: always
+    image: my/festivals-upload
+    container_name: festivals-upload
+    hostname: festivals-upload
+    networks:
+      festivals_backend:
+        aliases:
+          - upload.festivals-gateway
+      
+networks:
+  festivals_backend:
+    external: true
+    name: festivals-network
