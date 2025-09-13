@@ -7,10 +7,18 @@ use Spreadsheet::Read;
 use lib '.';
 use FestivalsAgent;
 use Time::Piece;
+use Getopt::Long;
+
+my $inputFile = 'demo.xlsx';
+my $insideContainer = 0;
+GetOptions( "inputfile=s" => \$inputFile,
+            "inside" => \$insideContainer )
+  or die "Invalid parameter passed. Valid parameters: 'inputfile, inside'";
+
 
 my $fa = FestivalsAgent->new('festivals-gateway');
 
-my $fileName = '/home/bram/programs/Festivals-App/festivals-docker/festivals-upload/Test001.ods';
+my $fileName = $inputFile;
 
 my $spreadsheetMap = spreadsheet_mapping();
 my $wb = Spreadsheet::Read->new( $spreadsheetMap->{workbook} );
@@ -34,6 +42,10 @@ exit;
 
 sub upload_festival {
     my ( $wb, $fa, $map ) = @_; 
+
+    my $festivals_list = $fa->get_api_endpoint( '/festivals' );
+    #print 'FESTIVALSLIST: ', dump($festivals_list),"\n";
+
     #print 'MAP: ',dump($map),"\n";
     my $ss = $wb->sheet($map->{sheet});
     #print 'SS: ', dump($ss), "\n";
@@ -45,6 +57,13 @@ sub upload_festival {
             if $map->{rows}{$row[0]};
     }
     #print 'FIELDS: ', dump(%dbFestival),"\n";
+    foreach my $f (@{$festivals_list->{data}}) {
+        if ( $dbFestival{festival_name} eq $f->{festival_name}) {
+            print "Festival $dbFestival{festival_name} already exists. Exiting...\n";
+## ALLOW DUPLICATES            exit;
+        }
+    }
+
     my $t = Time::Piece->strptime($dbFestival{festival_start},
                                     '%Y-%m-%d'); 
     $dbFestival{festival_start} = $t->epoch;                              
@@ -86,22 +105,23 @@ sub upload_locations{
 
 sub upload_events {
     my ( $wb, $fa, $map ) = @_;
+    print 'Events ';
 
     my $ss = $wb->sheet("Events");
 
     my $fields = get_column_numbers($ss, $map->{columns});
-    print 'FIELDS: ', dump($fields), "\n";
+    #print 'FIELDS: ', dump($fields), "\n";
     my %allTags = ();
     foreach my $tag ( @{$fa->get_url( '/tags' )->{data}} ) {
         $allTags{$tag->{tag_name}} = $tag->{tag_id};
     }
-    print 'TAGSHASHED: ', dump(%allTags), "\n";
+    #print 'TAGSHASHED: ', dump(%allTags), "\n";
     my %allLocations = ();
     foreach my $location ( @{$fa->get_url( '/locations' )->{data}} ) {
         $allLocations{$location->{location_name}} = 
                                         $location->{location_id};
     }
-    print 'LOCATIONSHASHED: ', dump(%allLocations), "\n";
+    #print 'LOCATIONSHASHED: ', dump(%allLocations), "\n";
     my $allArtists = get_all( $fa, 'artist' );
 
     for ( my $r = 2; $r <= $ss->maxrow; $r++ ) {
@@ -117,13 +137,13 @@ sub upload_events {
         } 
         $dbEvent{event_start} = 
                 convert_to_epoch($dbEvent{event_start},
-                                '%d/%m/%Y %H:%M %p');
+                                '%m/%d/%Y %H:%M %p');
         $dbEvent{event_end} = 
                 convert_to_epoch($dbEvent{event_end},
-                                '%d/%m/%Y %H:%M %p');
-        print 'EVENT: ', dump(%dbEvent), "\n";
+                                '%m/%d/%Y %H:%M %p');
+        #print 'EVENT: ', dump(%dbEvent), "\n";
         my $event = $fa->new_post_object( \%dbEvent, '/events' )->{data}[0];
-        print 'EVENTRESPONSE: ',dump($event),"\n";
+        #print 'EVENTRESPONSE: ',dump($event),"\n";
         associate($fa, 
                 'festivals', $f->{festival_id },
                 'events', $event->{event_id});
@@ -143,9 +163,9 @@ sub upload_events {
                 push @eventArtist, $row[$fields->{$k}];
             }
         }
-        print 'EVENTTAG: ',dump(@eventTag), "\n";
-        print 'EVENTLOCATION: ',dump(@eventLocation), "\n";
-        print 'EVENTARTIST: ',dump(@eventArtist), "\n";
+        #print 'EVENTTAG: ',dump(@eventTag), "\n";
+        #print 'EVENTLOCATION: ',dump(@eventLocation), "\n";
+        #print 'EVENTARTIST: ',dump(@eventArtist), "\n";
 
 ### SMELL: CANNOT TAG EVENTS!!!
 #        if ( scalar @eventTag ) {
@@ -159,7 +179,7 @@ sub upload_events {
                 associate_location($fa, 'events', 
                     $event->{event_id}, $allLocations{$l} )
                 } else {
-                    print "Location $l not found\n";
+                    print "\nLocation $l not found (Event - $event->{event_name})\n";
                 }
 
             }
@@ -171,12 +191,15 @@ sub upload_events {
                     'events', $event->{event_id}, 
                     'artist', $$allArtists{$a} )
                 } else {
-                    print "Artist $a not found\n";
+                    print "\nArtist $a not found (Event - $event->{event_name})\n";
                 }
             }
         }
-        #exit;
+my $counter = ($r % 10) ? '.' : '+';
+$| = 1;
+print $counter;        #exit;
     }
+    print "\n";
 }
 
 sub get_all {
@@ -199,24 +222,27 @@ sub convert_to_epoch {
 sub associate {
     my ($fa, $source, $sourceId, $target, $targetId ) = @_;
 
+    return unless $sourceId;
     my $associationEndpoint = 
         join '/', $source, $sourceId, $target, $targetId;
-    print 'ENDPOINT: ', $associationEndpoint, "\n";
+    #print 'ENDPOINT: ', $associationEndpoint, "\n";
     my $a = $fa->new_post_object( {}, '/'.$associationEndpoint );
-    print 'ASSOCIATION: ', dump($a), "\n";
+    #print 'ASSOCIATION: ', dump($a), "\n";
 }
 sub associate_location {
     my ($fa, $type, $id, $locationId ) = @_;
 
     my $associationEndpoint = 
         join '/', $type, $id, 'location', $locationId;
-    print 'ENDPOINT: ', $associationEndpoint, "\n";
+    #print 'ENDPOINT: ', $associationEndpoint, "\n";
     my $a = $fa->new_post_object( {}, '/'.$associationEndpoint );
-    print 'ASSOCIATION: ', dump($a), "\n";
+    #print 'ASSOCIATION: ', dump($a), "\n";
 }
 
 sub upload_artists {
     my ( $wb, $fa, $map ) = @_;
+
+    print 'Artists ';
 
     my @sheets = $wb->sheets();
     my $ss = $wb->sheet("Artists");
@@ -231,6 +257,7 @@ sub upload_artists {
 
     for ( my $r = 2; $r <= $ss->maxrow; $r++ ) {
 my $counter = ($r % 10) ? '.' : '+';
+$| = 1;
 print $counter;
 
         my %dbArtist = ();
@@ -273,6 +300,7 @@ print $counter;
             add_image_url_and_associate( $fa, $artist->{artist_id}, \@artistImage );
         }
     }
+    print "\n";
 }
 
 sub add_image_url_and_associate {

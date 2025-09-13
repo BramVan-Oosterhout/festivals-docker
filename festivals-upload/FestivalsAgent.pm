@@ -8,17 +8,18 @@ use HTTP::Request;
 use HTTP::Request::Common; # Use HTTP::Request directly for more control
 use JSON; # For encoding Perl data structures to JSON
 use Cwd;
+use Try::Tiny;
 
 use Data::Dump qw(dump);
 
 sub new{
-    my ($class, $endpoint) = @_;
+    my ($class, $domain) = @_;
     my $pwd = cwd();
     my $self = {
-        gateway => 'https://gateway.' . $endpoint,
-        discovery => 'https://discovery.' . $endpoint,
-        api => 'https://api.' . $endpoint,
-        files => 'https://files.' . $endpoint,
+        gateway => 'https://gateway.' . $domain,
+        discovery => 'https://discovery.' . $domain,
+        api => 'https://api.' . $domain,
+        files => 'https://files.' . $domain,
         JWT => _get_jwt_from_festivals(),
         SSL_ca_file =>  $pwd . '/ca.crt',
         SSL_cert_file => $pwd . '/api-client.crt',
@@ -88,6 +89,23 @@ sub post_location {
     my $response = _modify_hash_for_url( $self, 'POST', \%dbLocation, $endpoint );
     #print 'LOCATION response: ',dump($response), "\n";
     return $response;
+}
+
+sub get_api_endpoint{
+    my $self = shift;
+    my ( $endpoint ) = @_;
+
+    my $response_content = _get_url( $self, $self->{api} . $endpoint );
+    my $result;
+    try {
+        #print "I will decode the JSON\n";
+        $result = decode_json($response_content);
+    } 
+    catch  {
+        #print "I found an error in the JSON\n";
+        return undef;
+    } ;
+    return $result;
 }
 
 sub get_url{
