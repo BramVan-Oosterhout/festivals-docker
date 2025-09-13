@@ -8,7 +8,7 @@ ALL-UP = $(patsubst %,%.up,${SERVERS})
 ALL-DOWN = $(patsubst %,%.down,${SERVERS})
 ALL-CONFIGURE = $(patsubst %,%.configure,${SERVERS})
 
-demo: upload
+demo: all upload_demo
 
 all: ubuntu certificates ${SERVERS} checks
 
