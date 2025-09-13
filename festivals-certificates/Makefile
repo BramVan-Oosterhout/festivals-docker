@@ -22,6 +22,7 @@ vpath %.pem pki/private:pki/issued
 # Certificate reference: https://www.microfocus.com/documentation/enterprise-developer/ed60/ED-Eclipse/BKCJCJCERTS001.html
 
 all: ${PEMS}
+	chown -R bram pki
 crts: ${CRTS}
 		
 %.crt %.key : 
