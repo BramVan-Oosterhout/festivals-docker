@@ -8,7 +8,3 @@ WORKDIR /home/build
 RUN apt-get -y update && \
     apt-get -y install curl sudo ufw systemctl joe less iputils-ping
 
-################ Gateway ################
-#COPY install.sh install.sh
-#RUN chmod +x install.sh
-#RUN ./install.sh
