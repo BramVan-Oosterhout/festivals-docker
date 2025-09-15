@@ -12,6 +12,7 @@ services:
     networks:
       - frontend
       - backend
+      - festivals_backend
     ports:
       - "8765:80"
     volumes:
@@ -44,3 +45,7 @@ networks:
   frontend:
   backend:
     internal: true
+  festivals_backend:
+    external: true
+    name: festivals-network
+
