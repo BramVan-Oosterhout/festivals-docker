@@ -1,0 +1,27 @@
+FROM my/festivals-ui-base
+
+WORKDIR /home/build
+
+
+RUN apk add perl-data-dump 
+
+WORKDIR /var/www/foswiki
+COPY --chown=nginx:nginx FestivalsPlugin* .
+COPY --chown=nginx:nginx --chmod=640 ca.crt working/work_areas/FestibalsPlugin/ca.crt
+COPY --chown=nginx:nginx --chmod=640 api-client.crt working/work_areas/FestibalsPlugin/api-client.crt
+COPY --chown=nginx:nginx --chmod=600 api-client.key working/work_areas/FestibalsPlugin/api-client.key
+
+RUN    perl tools/extension_installer FestivalsPlugin -r -enable install 
+RUN    tools/configure -save -noprompt 
+RUN    tools/configure -save -set {Password}='insecure'
+#RUN    perl tools/fix_file_permissions.sh 
+#RUN    chown -R nginx:nginx *
+#RUN mkdir working/work_areas/FestivalsPlugin && \
+#    mv /home/build/* ./working/work_areas/FestivalsPlugin/.
+                           
+################## Container setup ####################
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+ENTRYPOINT [ "/entrypoint.sh" ]
+

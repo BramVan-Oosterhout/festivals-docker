@@ -1,0 +1,8 @@
+FROM timlegge/docker-foswiki:latest
+
+WORKDIR /home/build
+
+RUN apk update && \
+    apk upgrade && \
+    apk add --update
+    
