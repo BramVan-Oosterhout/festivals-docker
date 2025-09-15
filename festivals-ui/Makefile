@@ -22,8 +22,14 @@ certs:
 	cp ../festivals-certificates/pki/ca.crt .
 	cp ../festivals-certificates/pki/issued/api-client.crt .
 	cp ../festivals-certificates/pki/private/api-client.key .
+	cp ../festivals-certificates/pki/ca.crt \
+			/home/devwiki/core/working/work_areas/FestivalsPlugin
+	cp ../festivals-certificates/pki/issued/api-client.crt \
+			/home/devwiki/core/working/work_areas/FestivalsPlugin
+	cp ../festivals-certificates/pki/private/api-client.key \
+			/home/devwiki/core/working/work_areas/FestivalsPlugin
 
-server: certs entrypoint.sh
+server: certs entrypoint.sh down remove-foswiki_www
 	${BUILD} -f configure.dck --tag my/${APP} . 
 
 up:
@@ -31,4 +37,7 @@ up:
 
 down:
 	docker compose --file ${APP}.yml down
+
+remove-foswiki_www:
+	- docker volume rm festivals-ui_foswiki_www
 
