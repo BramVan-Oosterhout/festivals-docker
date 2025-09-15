@@ -1,8 +1,8 @@
 FROM timlegge/docker-foswiki:latest
 
 WORKDIR /home/build
-
-RUN apk update && \
-    apk upgrade && \
-    apk add --update
+######### SMELL ################# THIS UPGRADE LEADS TO *** BAD GATEWAY *** ON LOGIN
+#RUN apk update && \
+#    apk upgrade && \
+#    apk add --update
     
