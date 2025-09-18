@@ -9,15 +9,15 @@ festivals-docker does demonstrate a fully operational backend for  Festivals-App
 This repository consists of a top level directory and subdiretories for each component of the application. Documentation (when it exists) DOCUMENTATION.md file in each directory. In each of these files there is a section "Operation" that describes how to use the services provided by that module.
 
 ## How do I get started?
-To get started you can clone this repository, change to the cloned directory and fype make. 
+To get started you can clone this repository, change to the cloned directory and fype make. Depending on your installation and rights, you may require `sudo` for some commands.
 ```
 	git clone git@github.com:BramVan-Oosterhout/festivals-docker.git
     cd festivals-docker
     make
 ```
-This will create abd start all containers, upload a festivla test data and provide a web page to access the data at https://localhost. 
+This will take about 10 minutes. make creates aff images and starts all containers, displays their status, uploads a festival as test data and provides a web page to access the data at https://localhost. 
 
-Remember that foswiki-docker is a developers implementation. Your software configuration may be different and some dependencies may be absent in your configuration
+Remember that festivals-docker is a developers implementation. Your software configuration may be different and some dependencies may be absent in your configuration
 You must have the following as 
 a minimum:
 *   Linux (I use Ubuntu 24)
