@@ -17,6 +17,10 @@ COPY --chown=nginx:nginx --chmod=600 api-client.key working/work_areas/Festivals
 RUN    perl tools/extension_installer FestivalsPlugin -r -enable install 
 RUN    tools/configure -save -noprompt 
 RUN    tools/configure -save -set {Password}='insecure'
+RUN    tools/configure -save -set {FestivalsPlugin}{UseContainerNetwork}=1
+RUN    tools/configure -save -set {HomePagePlugin}{SiteDefaultTopic}='Sandbox.FestivalsApp'
+RUN    tools/configure -save -set {ImagePlugin}{AutoAttachExternalImages}=0
+RUN    tools/configure -save -set {ImagePlugin}{RenderExternalImageLinks}=1
 #RUN    perl tools/fix_file_permissions.sh 
 #RUN    chown -R nginx:nginx *
 #RUN mkdir working/work_areas/FestivalsPlugin && \
