@@ -1,1 +1,1 @@
---subject-alt-name=DNS:festivals-gateway,DNS:gateway.festivals-gateway,DNS:discovery.festivals-gateway,DNS:api.festivals-gateway,DNS:files.festivals-gateway
+--subject-alt-name=DNS:festivals-gateway,DNS:gateway.festivals-gateway,DNS:discovery.festivals-gateway,DNS:api.festivals-gateway,DNS:files.festivals-gateway,DNS:database.festivals-gateway

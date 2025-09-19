@@ -16,6 +16,7 @@ services:
          - gateway.festivals-gateway
          - discovery.festivals-gateway
          - files.festivals-gateway
+         - database.festivals-gateway
          - api.festivals-gateway
          - api.festivalsapp.dev
       

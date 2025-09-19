@@ -2,4 +2,5 @@
 127.0.1.1       discovery.festivals-gateway
 127.0.1.1       api.festivals-gateway
 127.0.1.1       files.festivals-gateway
+127.0.1.1	database.festivals-gateway
 127.0.0.1	api.festivalsapp.dev
