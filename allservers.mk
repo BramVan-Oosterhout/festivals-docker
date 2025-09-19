@@ -2,7 +2,7 @@
 
 SERVERS=festivals-identity-server festivals-gateway \
 	festivals-fileserver festivals-database \
-	festivals-server festivals-website
+	festivals-server festivals-website festivals-ui
 
 ALL-UP = $(patsubst %,%.up,${SERVERS})
 ALL-DOWN = $(patsubst %,%.down,${SERVERS})

@@ -18,7 +18,7 @@ certificates:
 
 festivals%: FORCE
 	${MAKE} -C $@ all
-
+	sleep 5
 checks:
 	${MAKE} -C festivals-checks all run
 

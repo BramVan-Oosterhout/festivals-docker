@@ -1,10 +1,8 @@
 FROM my/festivals-ui-base
 
 WORKDIR /home/build
-### DEBUG 
-COPY --chmod=755 *check.sh .
-RUN apk add --upgrade curl libcurl jq
-### END DEBUG
+COPY --chown=nginx:nginx  etc.nginx.httpd.default.conf /etc/nginx/http.d/default.conf
+
 
 RUN apk add perl-data-dump 
 
@@ -18,9 +16,9 @@ RUN    perl tools/extension_installer FestivalsPlugin -r -enable install
 RUN    tools/configure -save -noprompt 
 RUN    tools/configure -save -set {Password}='insecure'
 RUN    tools/configure -save -set {FestivalsPlugin}{UseContainerNetwork}=1
-RUN    tools/configure -save -set {HomePagePlugin}{SiteDefaultTopic}='Sandbox.FestivalsApp'
 RUN    tools/configure -save -set {ImagePlugin}{AutoAttachExternalImages}=0
 RUN    tools/configure -save -set {ImagePlugin}{RenderExternalImageLinks}=1
+RUN    tools/configure -save -set {UpdatesPlugin}{MessageVariable}='DISABLED_BROADCASTMESSAFE';
 #RUN    perl tools/fix_file_permissions.sh 
 #RUN    chown -R nginx:nginx *
 #RUN mkdir working/work_areas/FestivalsPlugin && \
