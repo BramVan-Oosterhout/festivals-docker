@@ -12,7 +12,6 @@ services:
       festivals_backend:
         aliases:
           - database.festivals-gateway
- #       ipv4_address: 172.20.0.1
       
 networks:
   festivals_backend:
