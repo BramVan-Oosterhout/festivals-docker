@@ -1,4 +1,4 @@
-Rge festivaks-gateway server provides routing and load balancing services for the FestivalsApp. Access from the network is provided in five sub-domains, each providing a particular set of services.  
+The festivaks-gateway server provides routing and load balancing services for the FestivalsApp. Access from the network is provided in five sub-domains, each providing access to a particular set of services.  
 
 | Sub-domain | Services provided |
 | === | === |
