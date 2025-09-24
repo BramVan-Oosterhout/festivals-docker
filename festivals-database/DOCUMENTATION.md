@@ -1,26 +1,26 @@
 The festivals-database server provides storage for the data of the festivals supported by FestivalsApp, as well as functionality to maintain the server.
 
-The database tables are defined in the (create_database.sql) script. The fatabase is highly normalised. There are eight objects and fourteen mappings between the objects supported. These are tabulated below.  An `x`in the cell indicates that a mapping record of the form
+The database tables are defined in the [create_database.sql](https://github.com/Festivals-App/festivals-database/blob/main/database/create_database.sql) script in the Festivals-App repo. The database is highly normalised. There are eight objects and fourteen mappings between the objects supported. These are tabulated below.  An `X`in the cell indicates that a mapping record of the form
 ```
-tag_id object1_id object2_idorm:
+tag_id object1_id object2_id:
 ```
-is defined. For example, the `x` in the events row and artists column indicates a mapping exists of the form:
+is defined. For example, the `X` in the events row and artists column indicates a mapping exists of the form:
 ```
 tag_id event_id artist_id
 ```
 
 |artists | events | festivals | images | links | locations | places | tags |
-| === | === | === | === | === | === | === | === |
-| artists | | | | x | x | | | x  |
-| events | x | | | x | | x | | |
-| festivals | | x | | x | x | | x | x  |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| artists | | | | X | X | | | X  |
+| events | X | | | X | | X | | |
+| festivals | | X | | X | X | | X | X  |
 | images | | | | | | | | |
 | links | | | | | | | | |
-| locations | | | | x | x | | x | |
+| locations | | | | X | X | | X | |
 | places| | | | | | | | |
 | tags| | | | | | | | |
 
-From a database point of view, these mappings are bu-directional. If event E is mapped to artist A, then artist A is mapped to event E. 
+From a database point of view, these mappings are bi-directional. If event E is mapped to artist A, then artist A is mapped to event E. 
 
 ## Operation
 The festivals-database server supports the standard endpoints for server maintenance: /info, /version, /health, /update, /log, /log/trace. Access to the data stored in the database is provided by the festivals-server.
@@ -48,9 +48,9 @@ sudo make base server up
 The Makefile targets perform the following actions:
 
 | Target | Purpose |
-| === | === |
-| base | Retrieves the `install.sh` script from gitkub and executes the script. Ike image is tagged wit my/festivals-database-base. |
-| server | Adds the configuration details to the ...-base image' The image is tagged with my/festivals-database. |
+| --- | --- |
+| base | Retrieves the `install.sh` script from github and executes the script. The image is tagged wit my/festivals-database-base. |
+| server | Adds the configuration details to the my/festivals-database-base image. The image is tagged with my/festivals-database. |
 | up | Starts the festivals-database container, |
 | down | Stops the festivals-database container. |
 
