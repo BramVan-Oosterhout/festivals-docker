@@ -9,16 +9,16 @@ is defined. For example, the `X` in the events row and artists column indicates 
 tag_id event_id artist_id
 ```
 
-|artists | events | festivals | images | links | locations | places | tags |
-| --- | --- | --- | --- | --- | --- | --- | --- |
+|     |artists | events | festivals | images | links | locations | places | tags |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | artists | | | | X | X | | | X  |
 | events | X | | | X | | X | | |
 | festivals | | X | | X | X | | X | X  |
 | images | | | | | | | | |
 | links | | | | | | | | |
 | locations | | | | X | X | | X | |
-| places| | | | | | | | |
-| tags| | | | | | | | |
+| places | | | | | | | | |
+| tags   | | | | | | | | |
 
 From a database point of view, these mappings are bi-directional. If event E is mapped to artist A, then artist A is mapped to event E. 
 
