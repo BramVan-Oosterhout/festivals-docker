@@ -26,7 +26,7 @@ a minimum:
 
 Further dependencies are documented in DOCUMENTATION.md for each component.
 
-For a general technical overview of this implemtation, see (https://github.com/BramVan-Oosterhout/festivals-docker/blob/main/DOCUMENTATION.md)[DOCUMENTATION] in festivals-docker.
+For a general technical overview of this implemtation, see [DOCUMENTATION](https://github.com/BramVan-Oosterhout/festivals-docker/blob/main/DOCUMENTATION.md) in festivals-docker.
 
 ## Interested? Want to help?
 Your comments, issues and pull requests are welcome. 
