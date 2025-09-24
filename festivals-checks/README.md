@@ -7,7 +7,7 @@ docker exec -it festivals-<server> /bin/bash -c "/home/build/all-check.sh"
 make enter
 ./all-check.sh
 ```
-If all servers are up and operational, ./all-check will respond with:
+If all servers are up and operational, ./all-check.sh will respond with:
 ```
    >>> https://festivals-identity-server:22580/version: v0.8.5
    >>> https://gateway.festivals-gateway/version: v2.2.1
@@ -19,3 +19,5 @@ If all servers are up and operational, ./all-check will respond with:
 ```
 
 This implementation is based on the example provided in the Testing section of the operation/DEPLOYMENT.md document for each server in the Festivals-App repository. See (festivals-server operation)[https://github.com/Festivals-App/festivals-server/blob/main/operation/DEPLOYMENT.md] for an example.
+
+See [DOCUMENTATION](https://github.com/BramVan-Oosterhout/festivals-docker/blob/main/festivals-checks/DOCUMENTATION.md) for a list of checks.
