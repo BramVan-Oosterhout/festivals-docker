@@ -4,7 +4,7 @@ The festivaks-fileserver supports the storage and retrieval of files in the Fest
 The festivals-fileserver server supports the standard endpoints for server maintenance: /info, /version, /health, /update, /log, /log/trace. In addition the festivals-fileserver supports the following endpoints to create, retrieve and update files.
 
 | Operation | Endpoint | Purpose |
-| === | === | === |
+| --- | --- | --- |
 | GET | /files | GetFileList |
 | GET | /images/{imageIdentifier} | Download |
 | GET | /pdf/{pdfIdentifier} | DownloadPDF |
@@ -29,13 +29,13 @@ sudo make base server up
 The Makefile targets perform the following actions:
 
 | Target | Purpose |
-| === | === |
+| --- | --- |
 | base | Retrieves the `install.sh` script from github and executes the script. The image is tagged with my/festivals-fileserver-base. |
-| server | Adds the configuration details to the ...-base image. The image is tagged with my/festivals-fileserver. |
+| server | Adds the configuration details to the my/festivals-fileserver-base image. The image is tagged with my/festivals-fileserver. |
 | up | Starts the festivals-fileserver container, |
 | down | Stops the festivals-fileserver container. |
 
-Tge `install.sh` script does all the work to retrieve, install and configure a workable system. There is no post processing required.
+The `install.sh` script does all the work to retrieve, install and configure a workable system. There is no post processing required.
 
 
 
