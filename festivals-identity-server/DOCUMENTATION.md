@@ -2,11 +2,11 @@ The festivaks-identity-server supports the storage of user related information f
 
 
 ## Operation
-The festivals-identity-server server supports the standard endpoints for server maintenance: /info, /version, /health, /update, /log, /log/trace. In addition the festivals-identity-server supports the following endpoints to create, retrieve and update iser related information.
+The festivals-identity-server server supports the standard endpoints for server maintenance: /info, /version, /health, /update, /log, /log/trace. In addition the festivals-identity-server supports the following endpoints to create, retrieve and update user related information.
 
 ### Access and Aythorisation services
 | Operation | Endpoint | Purpose |
-| === | === | === |
+| --- | --- | --- |
 | POST | /users/signup | Signup |
 | GET | /users/login | Login |
 | GET | /users/refresh | Refresh |
@@ -21,11 +21,11 @@ The festivals-identity-server server supports the standard endpoints for server 
 | POST | /service-keys | AddServiceKey |
 
 * /user/signon - allows a user to register by POSTing a user object as JSON: '{ "email": "me@mail.local", "password": "insecure" }'
-* /users/login - returns a Java Web Token (JWT) when a registered user GETs the endpoint with the Authentication Basic me@home.local:insecure
+* /users/login - returns a Java Web Token (JWT) when a registered user GETs the endpoint with the Authentication Basic me@mail.local:insecure
 
 ### Endpoints not understood
 | Operation | Endpoint | Purpose |
-| === | === | === |
+| --- | --- | --- |
 | POST | /users/{objectID}/role/{resourceID} | SetUserRole |
 | POST | /users/{objectID}/festival/{resourceID} | SetFestivalForUser |
 | POST | /users/{objectID}/artist/{resourceID} | SetArtistForUser |
@@ -64,13 +64,13 @@ sudo make base server up
 The Makefile targets perform the following actions:
 
 | Target | Purpose |
-| === | === |
+| --- | --- |
 | base | Retrieves the `install.sh` script from github and executes the script. The image is tagged with my/festivals-identity-server-base. |
 | server | Adds the configuration details to the ...-base image. The image is tagged with my/festivals-identity-server. |
 | up | Starts the festivals-identity-server container, |
 | down | Stops the festivals-identity-server container. |
 
-Tge `install.sh` script does all the work to retrieve, install and configure a workable system. There is no post processing required.
+The `install.sh` script does all the work to retrieve, install and configure a workable system. There is no post processing required.
 
 
 
