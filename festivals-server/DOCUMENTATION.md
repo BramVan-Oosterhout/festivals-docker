@@ -5,7 +5,7 @@ The festivals-server server supports the standard endpoints for server maintenan
 
 ### Retrievals
 | Operation | Endpoint | Purpose |
-| === | === | === |
+| --- | --- | --- |
 | GET | /festivals | GetFestivals |
 | GET | /festivals/{objectID} | GetFestival |
 | GET | /festivals/{objectID}/events | GetFestivalEvents |
@@ -41,7 +41,7 @@ The festivals-server server supports the standard endpoints for server maintenan
 
 Retrievals are requested by GETting is URL. In response an object is returned in JavaScript Object Notation (JSON), Typical examples are:
 ```
-===========================================================================
+---------------------------------------------------------------------------
    >>> https://festivals-server:10439/festivals
 {
   "data": [
@@ -77,7 +77,7 @@ Retrievals are requested by GETting is URL. In response an object is returned in
     }
   ]
 }    
-===========================================================================
+---------------------------------------------------------------------------
    >>> https://festivals-server:10439/events/1/artist
 {
   "data": [
@@ -90,7 +90,7 @@ Retrievals are requested by GETting is URL. In response an object is returned in
   ]
 }
 ```
-The descroptions are cut in this example. The ,,, replaces the removed text. The returned information is always an array of data: { "data": [ ..., ..., ... ] }, even when only one element is returned. `server=check.sh` in the festivals-checks container provides many more examples and a place for experimentation.
+The descriptions are cut in this example. The ,,, replaces the removed text. The returned information is always an array of data: { "data": [ ..., ..., ... ] }, even when only one element is returned. `server-check.sh` in the festivals-checks container provides many more examples and a place for experimentation.
 
 The defined endpoints limit the ability to retieve the bi-directional, many-to-many relationships. The table below illustrates the endpoints implemented.
 * X indicates the database mapping table. For example map_festivals_events
@@ -103,7 +103,7 @@ Only two retrievals are implemented in both directions:
 Other relationships need to be calculated like: List all events for an artist.
 
 | TO >| festivals | events |artists | ima G es | links | locations | places | ta G s }
-| FROM v| === | === | === | === | === | === | === | === |
+| FROM v| --- | --- | --- | --- | --- | --- | --- | --- |
 | festivals | | X P G | | X P G | X P G | | X P G | X P G  |
 | events | G | | X P G | X P G | | X P  G | | |
 | artists | | | | X P G | X P G | | | X P G  |
@@ -115,7 +115,7 @@ Other relationships need to be calculated like: List all events for an artist.
 
 ### Modifications
 | Operation | Endpoint | Purpose |
-| === | === | === |
+| --- | --- | --- |
 | POST | /festivals | CreateFestival |
 | PATCH | /festivals/{objectID} | UpdateFestival |
 | DELETE | /festivals/{objectID} | DeleteFestival |
@@ -178,7 +178,7 @@ POST and PATCH need a JSON object to supply the new data. DELETE does not requir
 ### Server implementation
 The `festivals-server.cnf` file defines the bind-host as `festivals-server`. The configured certificates are for festivals-server and include the required Subject Alternate Names (SANs) in hostlist.
 
-The festivals-server interacts with the festivals-database. The interaction is configured in the `[database]` section of the configuration file. The festivals-server use the FestivalsAppDatabaseClient certificate and key to identify itself to the festivals-database. They are stored inthe database-client.crt and database-client.key files.
+The festivals-server interacts with the festivals-database. The interaction is configured in the `[database]` section of the configuration file. The festivals-server uses the FestivalsAppDatabaseClient certificate and key to identify itself to the festivals-database. They are stored in the database-client.crt and database-client.key files.
 
 The festivals-server.yml file defines the environment for the festivals-server container:
 * start from the my/festivals-server image
@@ -194,7 +194,7 @@ sudo make base server up
 The Makefile targets perform the following actions:
 
 | Target | Purpose |
-| === | === |
+| --- | --- |
 | base | Retrieves the `install.sh` script from github and executes the script. The image is tagged with my/festivals-server-base. |
 | server | Adds the configuration details to the ...-base image. The image is tagged with my/festivals-server. |
 | up | Starts the festivals-server container, |

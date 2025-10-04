@@ -13,4 +13,4 @@ Typical insertions are:
 * POST /events - to create an event
 * POST /festivals/{festival_id}/events/{event_id} - to associate event ID=event_id to festival ID=festival_id.
 
-See the (DOCUMENTATION) for a list of endpoints and other information.
+See the [DOCUMENTATION](https://github.com/BramVan-Oosterhout/festivals-docker/blob/main/festivals-server/DOCUMENTATION.md) for a list of endpoints and other information.
