@@ -2,7 +2,7 @@ The festivaks-gateway server provides routing and load balancing services for th
 
 The information about services available is provided by the `discovery` sub-domain at the /services endpoiny,
 ```
-===========================================================================
+---------------------------------------------------------------------------
    >>> https://discovery.festivals-gateway/services
 {
   "data": [
@@ -43,7 +43,7 @@ The information about services available is provided by the `discovery` sub-doma
     }
   ]
 }
-===========================================================================
+---------------------------------------------------------------------------
 ```
 
 This information is maintained by the respective servers when they post to
@@ -54,8 +54,7 @@ https://discovery.festivals-gateway/loversear
 ## Operation
 The festivals-gateway server supports the standard endpoints for server maintenance: /info, /version, /health, /update, /log, /log/trace. 
 
-The festivals-database server is accessible via two domains defined in the hostlist file: `festivals-gateway`, `gateway.festivals-gateway`, `discovery.festivals-gateway`,`api.festivals-gateway`, `files.festivals-gateway`, `database.festivals-gateway`
-.
+The festivals-gateway server is accessible via six domains defined in the hostlist file: `festivals-gateway`, `gateway.festivals-gateway`, `discovery.festivals-gateway`,`api.festivals-gateway`, `files.festivals-gateway`, `database.festivals-gateway`.
 
 The `festivals-gateway.cnf` file defines the bind-host as `festivals-gatewau`. The configured certificates are for festivals-gateway and include the required Subject Alternate Names (SANs).
 
@@ -73,10 +72,10 @@ sudo make base server up
 The Makefile targets perform the following actions:
 
 | Target | Purpose |
-| === | === |
+| --- | --- |
 | base | Retrieves the `install.sh` script from github and executes the script. The image is tagged with my/festivals-gateway-base. |
 | server | Adds the configuration details to the ...-base image. The image is tagged with my/festivals-gateway. |
 | up | Starts the festivals-gateway container, |
 | down | Stops the festivals-gateway container. |
 
-Tge `install.sh` script does all the work to retrieve, install and configure a workable system. There is no post processing required.
+The `install.sh` script does all the work to retrieve, install and configure a workable system. There is no post processing required.
