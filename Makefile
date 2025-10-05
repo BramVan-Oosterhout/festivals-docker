@@ -25,4 +25,8 @@ checks:
 upload_demo:
 	${MAKE} -C festivals-upload base server up
 
+prompt:
+	@echo Open web site with http://localhost:8765
+	@echo Login as user: admin with password: insecure.
+
 FORCE:
