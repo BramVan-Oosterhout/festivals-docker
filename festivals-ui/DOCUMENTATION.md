@@ -1,10 +1,10 @@
-festivals-ui implements a user interface to the FestivalsApp backend using the open source Enterprise wiki [Foswiki](https://foswiki.org). This interdace was build as an experiment in using the FestivalsApp and is not mant to be a front end. 
+festivals-ui implements a user interface to the Festivals-App backend using the open source Enterprise wiki [Foswiki](https://foswiki.org). This interdace was build as an experiment in using the Festivals-App and is not mant to be a front end. 
 
 festivals-ui does all web page building at the back end, sending a fully formatted page to the browser for rendering. As a consequence, there is no local storage at the front end and all processing requires a request/response round trip to the server.
 
 Foswiki implements a web page through the specification of macros on a page. Many macros are predefined, and the festivals-ui uses several of those. %IMAGE( ... )% to display images and %FORMATLIST{ ... }%  to format a list of data.
 
-The interface to the FestivalsApp is implemented in a plugin, the FestivalsPlugin. The plugin defines a collection of Foswiki macros, that retrieve data from the FestivalsApp and return the data as strings. A typical example is the combination 
+The interface to the Festivals-App is implemented in a plugin, the FestivalsPlugin. The plugin defines a collection of Foswiki macros, that retrieve data from the Festivals-App and return the data as strings. A typical example is the combination 
 ```
 %FORMATLIST{ "%EVENTS_LIST{ festivals_id="3"}%" {formatting instructions} }%
 ```
@@ -21,7 +21,7 @@ The FestivalsPlugin defines the following Foswiki macros:
 | ARTIST_DESCRIPTION | %ARTIST_DESCRIPTION{ artist_id="42" }% | Show the description of artist_id 42 |
 | ARTIST_TAGS | %ARTIST_TAGS{ artist_id="42" }% | List the tags for artist_id 42 |
 
-This list illustrates one of the shortcomings in the thinking behind the implementation of the plugin. Currently each macro creates a new instance of the FestivalsPlugin and therefore each macro needs to access retrieve the data from the database. The access to the database provides one endpoint for the artist data: `/artist/42` which returns both the artist_name and the artist_description. So the ARTIST_NAME and ARTIST_DESCRIPTION could be implemented with a single FestivalsApp access, followed by appropriate formatting  to render the FestivalsArtist page. If the FestivalsPlugin is developed further, the approach need to be refined.
+This list illustrates one of the shortcomings in the thinking behind the implementation of the plugin. Currently each macro creates a new instance of the FestivalsPlugin and therefore each macro needs to access retrieve the data from the database. The access to the database provides one endpoint for the artist data: `/artist/42` which returns both the artist_name and the artist_description. So the ARTIST_NAME and ARTIST_DESCRIPTION could be implemented with a single Festivals-App access, followed by appropriate formatting  to render the FestivalsArtist page. If the FestivalsPlugin is developed further, the approach need to be refined.
 
 ## Server implementation
 The image created in base.dck from the `timlegge/docker-foswiki:latest` image is further configured in configure.dck. The FestivalsPlugin needs to be added to the installed plugins. 

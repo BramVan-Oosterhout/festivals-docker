@@ -1,4 +1,4 @@
-The festivaks-identity-server supports the storage of user related information for the FestivalsApp. This information is maintained on the server, separate from the festivals information stored at the festivals-datavase server.
+The festivaks-identity-server supports the storage of user related information for the Festivals-App. This information is maintained on the server, separate from the festivals information stored at the festivals-datavase server.
 
 
 ## Operation

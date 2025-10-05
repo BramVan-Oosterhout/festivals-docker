@@ -1,4 +1,4 @@
-The festivals-database server provides storage for the data of the festivals supported by FestivalsApp. The objects stored areL
+The festivals-database server provides storage for the data of the festivals supported by Festivals-App. The objects stored areL
 
 | Object | Main attributes |
 | --- | --- |

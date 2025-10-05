@@ -1,4 +1,4 @@
-The festivaks-server supports the storage and retrieval of ojects in the FestivalsApp. Objects available are: festivals, events, artists, locations, places and tags.
+The festivaks-server supports the storage and retrieval of ojects in the Festivals-App. Objects available are: festivals, events, artists, locations, places and tags.
 
 Objects are uploaded by POSTing them to the availabke endpoints. Retrievals areperformed by GETting the equivalent endpoint. All responses are in JavaScript Object Notation (JSON).
 

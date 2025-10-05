@@ -1,4 +1,4 @@
-The festivaks-gateway server provides routing and load balancing services for the FestivalsApp. The server routes access to different services on their respective servers, depending on the sub-domain provided when accessing the festivals-gateway.
+The festivaks-gateway server provides routing and load balancing services for the Festivals-App. The server routes access to different services on their respective servers, depending on the sub-domain provided when accessing the festivals-gateway.
 
 The information about services available is provided by the `discovery` sub-domain at the /services endpoiny,
 ```

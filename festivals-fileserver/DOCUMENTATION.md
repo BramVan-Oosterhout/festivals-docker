@@ -1,4 +1,4 @@
-The festivaks-fileserver supports the storage and retrieval of files in the FestivalsApp. 
+The festivaks-fileserver supports the storage and retrieval of files in the Festivals-App. 
 
 ## Operation
 The festivals-fileserver server supports the standard endpoints for server maintenance: /info, /version, /health, /update, /log, /log/trace. In addition the festivals-fileserver supports the following endpoints to create, retrieve and update files.

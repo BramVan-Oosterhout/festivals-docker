@@ -1,4 +1,4 @@
-The festivaks-website presents a portal to the FestivalsApp.The portal is avalable at [localhost:10443](https://localhost:10443).
+The festivaks-website presents a portal to the Festivals-App.The portal is avalable at [localhost:10443](https://localhost:10443).
 
 Note: Firefox (version 142) insisted on telling me "Error code: SEC_ERROR_UNKNOWN_ISSUER" even though the CA certificate for the authority in festivals-certificates is available in the servers certificate store.I tried various answers from the internet, but eventually installed another browser: epiphany-browser.
 

@@ -6,7 +6,7 @@ festivals-identiry-server, festivals-gateway, festivals-database, festivals-serv
 
 festivals-network has the definition of the internal docker network connecting the containers of the Festivals-App.
 
-festivals-checks has the definition of a container and shell scripts that test the access variousthe Festivals-App containers.
+festivals-checks has the definition of a container and shell scripts that test the access to the Festivals-App containers.
 
 festivals-upload has a perl script and the data to load the test festival into the festivals-database.
 
@@ -28,6 +28,7 @@ allservers.mk defines targets to configure, start and stop all containers. All s
 
 | Target | Delegated | Action |
 | --- | --- | --- |
+| demo | Y | all, followed by upload and a prompt to login |
 | all | Y | creates all images and starts each container |
 | allup | Y | starts all containers |
 | alldown | Y | stops all containers |

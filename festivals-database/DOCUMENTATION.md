@@ -1,4 +1,4 @@
-The festivals-database server provides storage for the data of the festivals supported by FestivalsApp, as well as functionality to maintain the server.
+The festivals-database server provides storage for the data of the festivals supported by Festivals-App, as well as functionality to maintain the server.
 
 The database tables are defined in the [create_database.sql](https://github.com/Festivals-App/festivals-database/blob/main/database/create_database.sql) script in the Festivals-App repo. The database is highly normalised. There are eight objects and fourteen mappings between the objects supported. These are tabulated below.  An `X`in the cell indicates that a mapping record of the form
 ```
@@ -56,8 +56,8 @@ The Makefile targets perform the following actions:
 
 Tge `install.sh` script does all the work to retrieve, install and configure a workable system. `install.sh` defines two database users with:
 ```
-mysql -e "CREATE USER 'festivals.api.reader'@'%' IDENTIFIED BY '$read_only_password' REQUIRE SUBJECT '/CN=FestivalsApp Database Client';"
-mysql -e "CREATE USER 'festivals.api.writer'@'%' IDENTIFIED BY '$read_write_password' REQUIRE SUBJECT '/CN=FestivalsApp Database Client';"
+mysql -e "CREATE USER 'festivals.api.reader'@'%' IDENTIFIED BY '$read_only_password' REQUIRE SUBJECT '/CN=Festivals-App Database Client';"
+mysql -e "CREATE USER 'festivals.api.writer'@'%' IDENTIFIED BY '$read_write_password' REQUIRE SUBJECT '/CN=Festivals-App Database Client';"
 ```
 
 The Makefile generating the certificates does not handle spaces in the Common Name (CN), so I generated a certificate for 'FestivalsAppDatabaseClient'. The update is performed in configure.dck.

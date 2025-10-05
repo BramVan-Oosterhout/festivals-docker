@@ -1,4 +1,4 @@
-The festivaks-server supports the storage and retrieval of ojects in the FestivalsApp. Objects available are: festivals, events, artists, locations, places and tags.
+The festivaks-server supports the storage and retrieval of ojects in the Festivals-App. Objects available are: festivals, events, artists, locations, places and tags.
 
 ## Operation
 The festivals-server server supports the standard endpoints for server maintenance: /info, /version, /health, /update, /log, /log/trace. In addition the festivals-server supports the following endpoints to create, retrieve update and delete objects.
