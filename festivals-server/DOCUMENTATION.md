@@ -102,7 +102,8 @@ Only two retrievals are implemented in both directions:
 * List all tags for a festival AND List all festivals for a tag
 Other relationships need to be calculated like: List all events for an artist.
 
-| TO >| festivals | events |artists | ima G es | links | locations | places | ta G s }
+| TO >| festivals | events |artists | ima G es | links | locations | places |
+tags |
 | FROM v| --- | --- | --- | --- | --- | --- | --- | --- |
 | festivals | | X P G | | X P G | X P G | | X P G | X P G  |
 | events | G | | X P G | X P G | | X P  G | | |
