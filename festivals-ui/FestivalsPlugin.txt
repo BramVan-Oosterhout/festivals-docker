@@ -1,0 +1,61 @@
+%META:TOPICINFO{author="BramVanOosterhout" comment="" date="1757989140" format="1.1" reprev="2" version="1"}%
+%META:TOPICPARENT{name="Plugins"}%
+---+!! FestivalsPlugin Plugin
+%FORMFIELD{"Description"}%
+
+%TOC%
+
+   * GATEWAY_INFO
+   * ARTISTS_LIST
+   * ARTIST_NAME
+   * ARTIST_DESCRIPTION
+   * ARTIST_IMAGE
+   * ARTIST_TAGS
+   * EVENTS_LIST
+   * ARTIST_EVENTS
+   * FESTIVALS_LIST = %FESTIVALS_LIST%
+
+
+
+Learn how to create your own plugin in %SYSTEMWEB%.DevelopingPlugins.
+Documentation for Plugin API is in [[%SYSTEMWEB%.PerlDoc?module=Foswiki::Plugins::FestivalsPlugin][PerlDoc for FestivalsPlugin.pm]].
+
+<div class="foswikiHelp">%T% Note that FestivalsPlugin is documentation only.  Its
+settings are ignored by =configure= and it cannot be enabled.</div>
+
+---++ Configuration
+This plugin requires a connection to the Restivals-App to be configured in the configuration file. Use the configure  pages: Extensions > FestivalsApp
+
+---++ Installation
+You do not need to install anything in the browser to use this extension. The following instructions are for the administrator who installs the extension on the server.
+
+Open configure, and open the "Extensions" section. "Extensions Operation and Maintenance" Tab -&gt; "Install, Update or Remove extensions" Tab.  Click the "Search for Extensions" button.  
+Enter part of the extension name or description and press search.   Select the desired extension(s) and click install. If an extension is already installed, it will *not* show up in the
+search results.
+
+You can also install from the shell by running the extension installer as the web server user: (Be sure to run as the webserver user, not as root!)
+<verbatim>
+cd /path/to/foswiki
+perl tools/extension_installer <NameOfExtension> install
+</verbatim>
+
+If you have any problems, or if the extension isn't available in =configure=, then you can still install manually from the command-line. See https://foswiki.org/Support/ManuallyInstallingExtensions for more help.
+
+
+---++ Dependencies
+<table border="1" class="foswikiTable"><tr><th>Name</th><th>Version</th><th>Description</th></tr><tr><td align="left">Data::Dump</td><td align="left">&gt;=0</td><td align="left">May be required for lib/Foswiki/Plugins/FestivalsPlugin.pm, lib/Foswiki/Plugins/FestivalsPlugin.pm, lib/Foswiki/Plugins/FestivalsPlugin/Core.pm, lib/Foswiki/Plugins/FestivalsPlugin/FestivalsAgent.pm, lib/Foswiki/Plugins/FestivalsPlugin/test_get_all.pl</td></tr><tr><td align="left">Error</td><td align="left">&gt;=0</td><td align="left">May be required for lib/Foswiki/Plugins/FestivalsPlugin/Core.pm</td></tr><tr><td align="left">Foswiki::Func</td><td align="left">&gt;=0</td><td align="left">May be required for lib/Foswiki/Plugins/FestivalsPlugin.pm, lib/Foswiki/Plugins/FestivalsPlugin.pm, lib/Foswiki/Plugins/FestivalsPlugin/Core.pm</td></tr><tr><td align="left">Foswiki::Plugins</td><td align="left">&gt;=0</td><td align="left">May be required for lib/Foswiki/Plugins/FestivalsPlugin.pm, lib/Foswiki/Plugins/FestivalsPlugin.pm</td></tr><tr><td align="left">HTTP::Request</td><td align="left">&gt;=0</td><td align="left">May be required for lib/Foswiki/Plugins/FestivalsPlugin/FestivalsAgent.pm</td></tr><tr><td align="left">HTTP::Request::Common</td><td align="left">&gt;=0</td><td align="left">May be required for lib/Foswiki/Plugins/FestivalsPlugin/FestivalsAgent.pm</td></tr><tr><td align="left">JSON</td><td align="left">&gt;=0</td><td align="left">May be required for lib/Foswiki/Plugins/FestivalsPlugin/FestivalsAgent.pm</td></tr><tr><td align="left">LWP::UserAgent</td><td align="left">&gt;=0</td><td align="left">May be required for lib/Foswiki/Plugins/FestivalsPlugin/FestivalsAgent.pm</td></tr><tr><td align="left">Time::Piece</td><td align="left">&gt;=0</td><td align="left">May be required for lib/Foswiki/Plugins/FestivalsPlugin/Core.pm</td></tr><tr><td align="left">Try::Tiny</td><td align="left">&gt;=0</td><td align="left">May be required for lib/Foswiki/Plugins/FestivalsPlugin/FestivalsAgent.pm</td></tr><tr><td align="left">Unit::TestSuite</td><td align="left">&gt;=0</td><td align="left">May be required for test/unit/FestivalsPlugin/FestivalsPluginSuite.pm</td></tr><tr><td align="left">lib</td><td align="left">&gt;=0</td><td align="left">May be required for lib/Foswiki/Plugins/FestivalsPlugin/test_get_all.pl</td></tr></table>
+
+---++ Change History
+%TABLE{columnwidths="7em" tablewidth="100%"}%
+| | |
+
+%META:FORM{name="PackageForm"}%
+%META:FIELD{name="Author" title="Author" value="%25$CREATED_AUTHOR%25"}%
+%META:FIELD{name="Version" title="Version" value="1.00"}%
+%META:FIELD{name="Release" title="Release" value="04 Sep 2025"}%
+%META:FIELD{name="Description" title="Description" value="UI support vars for Gestivals-App"}%
+%META:FIELD{name="Repository" title="Repository" value="https://github.com/foswiki/distro"}%
+%META:FIELD{name="Copyright" title="Copyright" value="%25$CREATEDYEAR%25, %25$CREATED_AUTHOR%25, All Rights Reserved"}%
+%META:FIELD{name="License" title="License" value="GPL ([[http://www.gnu.org/copyleft/gpl.html][GNU General Public License]])"}%
+%META:FIELD{name="Home" title="Home" value="https://foswiki.org/Extensions/FestivalsPlugin"}%
+%META:FIELD{name="Support" title="Support" value="https://foswiki.org/Support/FestivalsPlugin"}%
